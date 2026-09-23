@@ -1,0 +1,11 @@
+{
+  "name": "dialbrio",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "pnpm --filter @dialbrio/web dev",
+    "build": "pnpm --filter @dialbrio/web build",
+    "start": "pnpm --filter @dialbrio/web start",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
