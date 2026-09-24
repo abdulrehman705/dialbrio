@@ -18,7 +18,7 @@ function ThemedToaster() {
         classNames: {
           toast: "!bg-surface-elevated !border-border !text-fg !shadow-lg !rounded-lg !font-sans",
           description: "!text-fg-muted",
-          actionButton: "!bg-brand-solid !text-white",
+          actionButton: "!bg-brand-solid !text-brand-on",
         },
       }}
     />

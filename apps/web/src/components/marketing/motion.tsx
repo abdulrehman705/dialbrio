@@ -55,13 +55,31 @@ export function MotionStyles() {
 
 interface RevealHeadingProps {
   text: string;
+  /** Optional second line in the Mono grey accent (text-fg-accent). */
+  accent?: string;
   as?: "h1" | "h2";
   className?: string;
   id?: string;
 }
 
-export function RevealHeading({ text, as: Tag = "h1", className, id }: RevealHeadingProps) {
+export function RevealHeading({ text, accent, as: Tag = "h1", className, id }: RevealHeadingProps) {
   const reduced = useReduced();
+  if (accent) {
+    const line = (t: string, extra?: string) =>
+      reduced ? (
+        <span className={cn("block", extra)}>{t}</span>
+      ) : (
+        <SplitText text={t} tag="span" splitType="words" delay={40} duration={0.6} ease="power3.out" from={{ opacity: 0, y: 28 }} to={{ opacity: 1, y: 0 }} threshold={0} rootMargin="0px" textAlign="left" className={cn("rb-split block pb-[0.08em]", extra)} />
+      );
+    return (
+      <Tag id={id} className={className} aria-label={`${text} ${accent}`}>
+        <span aria-hidden="true">
+          {line(text)}
+          {line(accent, "text-fg-accent")}
+        </span>
+      </Tag>
+    );
+  }
   if (reduced)
     return (
       <Tag id={id} className={className}>

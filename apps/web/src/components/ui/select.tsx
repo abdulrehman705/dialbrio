@@ -27,7 +27,7 @@ export function Select({ value, defaultValue, onValueChange, options, placeholde
         aria-label={aria["aria-label"]}
         aria-invalid={aria["aria-invalid"]}
         className={cn(
-          "inline-flex w-full items-center justify-between gap-2 rounded-md border border-border-strong bg-surface-sunken px-3 text-left text-sm text-fg outline-none transition-[border-color,box-shadow] focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/25 disabled:opacity-50 data-placeholder:text-fg-muted aria-invalid:border-danger",
+          "inline-flex w-full items-center justify-between gap-2 rounded-[10px] border border-border-input bg-surface px-3 text-left text-sm text-fg outline-none transition-[border-color,box-shadow] focus-visible:border-fg focus-visible:ring-2 focus-visible:ring-fg/15 disabled:opacity-50 data-placeholder:text-fg-muted aria-invalid:border-danger",
           size === "sm" ? "h-8 text-[13px]" : "h-9 max-lg:h-11",
           className,
         )}

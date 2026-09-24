@@ -76,7 +76,7 @@ export function ChoiceCard({ selected, onSelect, title, description, icon, disab
         className={cn(
           "mt-0.5 flex size-4 shrink-0 items-center justify-center border",
           multi ? "rounded-xs" : "rounded-full",
-          selected ? "border-brand-solid bg-brand-solid text-white" : "border-border-strong bg-surface-sunken",
+          selected ? "border-brand-solid bg-brand-solid text-brand-on" : "border-border-strong bg-surface-sunken",
         )}
       >
         {selected && (multi ? <Check className="size-3" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-white" />)}

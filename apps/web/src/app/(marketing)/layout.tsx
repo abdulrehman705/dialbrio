@@ -6,7 +6,7 @@ import { MotionStyles } from "@/components/marketing/motion";
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="light flex min-h-dvh flex-col bg-background text-fg">
-      <a href="#content" className="sr-only z-[60] rounded-md bg-brand-solid px-3 py-2 text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2">
+      <a href="#content" className="sr-only z-[60] rounded-md bg-brand-solid px-3 py-2 text-brand-on focus:not-sr-only focus:fixed focus:top-2 focus:left-2">
         Skip to content
       </a>
       <MotionStyles />

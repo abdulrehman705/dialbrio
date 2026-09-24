@@ -12,11 +12,11 @@ interface PageHeroProps {
   children?: React.ReactNode;
 }
 
-/** Ink hero for secondary pages, inset like the brand documents. */
+/** Light Mono hero for secondary pages, inset from the page edges. */
 export function PageHero({ eyebrow, title, description, cta = true, children }: PageHeroProps) {
   return (
     <section className="bg-background px-3 pt-3 sm:px-4 sm:pt-4">
-      <InkPanel className="mx-auto max-w-[1400px] py-16 md:py-20">
+      <InkPanel tone="paper" className="mx-auto max-w-[1400px] py-16 md:py-20">
         <Container>
           <Eyebrow>{eyebrow}</Eyebrow>
           <h1 className="mt-4 max-w-[820px] text-balance font-display text-[40px] leading-[1.04] font-bold tracking-[-0.04em] md:text-[56px]">{title}</h1>

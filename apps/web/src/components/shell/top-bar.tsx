@@ -59,7 +59,7 @@ export function TopBar() {
           <button
             type="button"
             onClick={() => openCommand(true)}
-            className="flex h-8 items-center gap-2 rounded-[7px] border border-border bg-surface pr-1.5 pl-2.5 text-[13px] text-fg-muted transition-colors hover:border-border-strong hover:text-fg-secondary max-md:size-10 max-md:justify-center max-md:p-0 md:w-64 xl:w-80"
+            className="flex h-9 items-center gap-2 rounded-full border border-border bg-surface pr-1.5 pl-2.5 text-[13px] text-fg-muted transition-colors hover:border-border-strong hover:text-fg-secondary max-md:size-10 max-md:justify-center max-md:p-0 md:w-64 xl:w-80"
             aria-label="Search and commands"
             aria-keyshortcuts="Meta+K Control+K"
           >

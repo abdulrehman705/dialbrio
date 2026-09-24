@@ -54,7 +54,7 @@ export default function ConversationsPage() {
               <li className="self-center rounded-full border border-border bg-surface px-3 py-1 text-[11.5px] text-fg-muted">Outbound call · no answer · 2:39 PM</li>
               {thread.map((m, i) => (
                 <li key={i} className={m.out ? "flex flex-col items-end gap-1" : "flex flex-col items-start gap-1"}>
-                  <span className={m.out ? "max-w-[85%] rounded-2xl rounded-br-md bg-brand-solid px-3.5 py-2 text-[13.5px] text-white" : "max-w-[85%] rounded-2xl rounded-bl-md border border-border bg-surface px-3.5 py-2 text-[13.5px] text-fg"}>
+                  <span className={m.out ? "max-w-[85%] rounded-2xl rounded-br-md bg-brand-solid px-3.5 py-2 text-[13.5px] text-brand-on" : "max-w-[85%] rounded-2xl rounded-bl-md border border-border bg-surface px-3.5 py-2 text-[13.5px] text-fg"}>
                     {m.text}
                   </span>
                   <span className="font-mono text-[10.5px] text-fg-muted">{m.meta}</span>

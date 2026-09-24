@@ -81,7 +81,7 @@ export function PricingPlans() {
   return (
     <section aria-label="Plans" className="bg-background">
       <div className="px-3 pt-3 sm:px-4 sm:pt-4">
-        <InkPanel className="mx-auto max-w-[1400px] pt-16 pb-44 md:pt-20">
+        <InkPanel tone="paper" className="mx-auto max-w-[1400px] pt-16 pb-44 md:pt-20">
           <Container>
             <Eyebrow>Pricing</Eyebrow>
             <h1 className="mt-4 max-w-[760px] font-display text-[42px] leading-[1.02] font-bold tracking-[-0.04em] md:text-[60px]">
@@ -109,7 +109,7 @@ export function PricingPlans() {
                       onClick={() => setInterval(value)}
                       className={cn(
                         "inline-flex h-10 items-center gap-1.5 rounded-full px-5 text-[14px] font-medium transition-colors duration-(--duration-fast)",
-                        on ? "bg-brand-solid text-white" : "text-fg-secondary hover:text-fg",
+                        on ? "bg-brand-solid text-brand-on" : "text-fg-secondary hover:text-fg",
                       )}
                     >
                       {label}

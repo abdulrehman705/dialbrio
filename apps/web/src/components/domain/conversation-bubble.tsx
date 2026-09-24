@@ -40,7 +40,7 @@ export function ConversationBubble({ entry }: { entry: ConversationEntry }) {
       <div
         className={cn(
           "max-w-[min(80%,480px)] rounded-2xl px-3.5 py-2 text-sm leading-relaxed whitespace-pre-wrap",
-          out ? "rounded-br-md bg-brand-solid text-white" : "rounded-bl-md border border-border bg-surface text-fg",
+          out ? "rounded-br-md bg-brand-solid text-brand-on" : "rounded-bl-md border border-border bg-surface text-fg",
           entry.status === "failed" && "border border-danger bg-danger-soft text-fg",
         )}
       >

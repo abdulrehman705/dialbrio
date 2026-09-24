@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
-const palette = ["bg-brand-soft text-brand-text", "bg-lead-fresh-soft text-lead-fresh-text", "bg-ai-soft text-ai-text", "bg-success-soft text-success-text", "bg-warning-soft text-warning-text"];
+// Mono: avatars are neutral; colour is reserved for status.
+const palette = ["bg-surface-active text-fg", "bg-surface-sunken text-fg border border-border", "bg-fg text-fg-inverse"];
 
 function hash(s: string) {
   let h = 0;

@@ -21,11 +21,12 @@ export function Hero() {
   return (
     <section className="bg-background pt-3 sm:pt-4">
       <div className="px-3 sm:px-4">
-        <InkPanel as="div" className="mx-auto max-w-[1400px] pt-16 pb-40 sm:pt-20 md:pb-52">
+        <InkPanel as="div" tone="paper" className="mx-auto max-w-[1400px] pt-16 pb-40 sm:pt-20 md:pb-52">
           <Container>
             <Eyebrow>DialBrio · power dialer</Eyebrow>
             <RevealHeading
-              text="Built to keep reps talking, not waiting for ringtones."
+              text="Built to keep reps talking,"
+              accent="not waiting for ringtones."
               className="mt-5 max-w-[880px] text-balance font-display text-[44px] leading-[1.02] font-bold tracking-[-0.04em] sm:text-[58px] lg:text-[72px]"
             />
             <p className="mt-6 max-w-[620px] text-[17px] leading-[1.6] text-fg-secondary md:text-[18px]">
@@ -46,7 +47,7 @@ export function Hero() {
 
             <dl className="mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
               {heroStats.map((s) => (
-                <div key={s.label} className="rounded-xl border border-border px-5 py-4">
+                <div key={s.label} className="rounded-xl border border-border bg-surface px-5 py-4">
                   <dt className="sr-only">{s.label}</dt>
                   <dd>
                     <span className="block font-display text-[28px] leading-8 font-bold tracking-[-0.03em] text-brand-text">

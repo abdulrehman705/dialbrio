@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export const inputBase =
-  "w-full min-w-0 rounded-md border border-border-strong bg-surface-sunken px-3 text-sm text-fg placeholder:text-fg-muted transition-[border-color,box-shadow] duration-(--duration-fast) outline-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/25 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger aria-invalid:ring-danger/20";
+  "w-full min-w-0 rounded-[10px] border border-border-input bg-surface px-3 text-sm text-fg placeholder:text-fg-muted transition-[border-color,box-shadow] duration-(--duration-fast) outline-none focus-visible:border-fg focus-visible:ring-2 focus-visible:ring-fg/15 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger aria-invalid:ring-danger/20";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   leadingIcon?: React.ReactNode;

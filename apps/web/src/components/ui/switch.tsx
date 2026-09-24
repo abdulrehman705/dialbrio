@@ -14,7 +14,7 @@ export function Switch({ className, ...props }: React.ComponentProps<typeof S.Ro
       )}
       {...props}
     >
-      <S.Thumb className="pointer-events-none block size-4 translate-x-0.5 rounded-full bg-white shadow-sm transition-transform duration-(--duration-fast) data-[state=checked]:translate-x-[18px]" />
+      <S.Thumb className="pointer-events-none block size-4 translate-x-0.5 rounded-full bg-white shadow-sm transition-[transform,background-color] data-[state=checked]:bg-brand-on duration-(--duration-fast) data-[state=checked]:translate-x-[18px]" />
     </S.Root>
   );
 }
@@ -23,7 +23,7 @@ export function Checkbox({ className, ...props }: React.ComponentProps<typeof C.
   return (
     <C.Root
       className={cn(
-        "peer inline-flex size-4 shrink-0 items-center justify-center rounded-xs border border-border-strong bg-surface-sunken text-white transition-colors data-[state=checked]:border-brand-solid data-[state=checked]:bg-brand-solid data-[state=indeterminate]:border-brand-solid data-[state=indeterminate]:bg-brand-solid disabled:opacity-50",
+        "peer inline-flex size-4 shrink-0 items-center justify-center rounded-xs border border-border-input bg-surface text-brand-on transition-colors data-[state=checked]:border-brand-solid data-[state=checked]:bg-brand-solid data-[state=indeterminate]:border-brand-solid data-[state=indeterminate]:bg-brand-solid disabled:opacity-50",
         className,
       )}
       {...props}
@@ -37,7 +37,7 @@ export const RadioGroup = ({ className, ...props }: React.ComponentProps<typeof 
 
 export function RadioItem({ className, ...props }: React.ComponentProps<typeof R.Item>) {
   return (
-    <R.Item className={cn("inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-border-strong bg-surface-sunken data-[state=checked]:border-brand-solid", className)} {...props}>
+    <R.Item className={cn("inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-border-input bg-surface data-[state=checked]:border-brand-solid", className)} {...props}>
       <R.Indicator className="size-2 rounded-full bg-brand-solid" />
     </R.Item>
   );

@@ -21,14 +21,14 @@ export function Segmented<T extends string>({ value, onValueChange, options, lab
       value={value}
       onValueChange={(v) => v && onValueChange(v as T)}
       aria-label={label}
-      className={cn("inline-flex items-center gap-0.5 rounded-md bg-surface-sunken p-0.5", size === "sm" ? "h-8" : "h-9", className)}
+      className={cn("inline-flex items-center gap-0.5 rounded-full bg-surface-sunken p-0.5", size === "sm" ? "h-8" : "h-9", className)}
     >
       {options.map((o) => (
         <ToggleGroup.Item
           key={o.value}
           value={o.value}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-[5px] px-2.5 text-xs font-medium whitespace-nowrap text-fg-muted transition-colors hover:text-fg data-[state=on]:bg-surface data-[state=on]:text-fg data-[state=on]:shadow-sm [&_svg]:size-3.5",
+            "inline-flex items-center gap-1.5 rounded-full px-2.5 text-xs font-medium whitespace-nowrap text-fg-muted transition-colors hover:text-fg data-[state=on]:bg-surface data-[state=on]:text-fg data-[state=on]:shadow-sm [&_svg]:size-3.5",
             size === "sm" ? "h-7" : "h-8",
           )}
         >

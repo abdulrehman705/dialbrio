@@ -46,7 +46,7 @@ function Item({ c, active, onSelect }: { c: Conversation; active: boolean; onSel
           <Icon className="size-3.5 shrink-0 text-fg-muted" aria-label={CHANNELS[c.lastChannel].label} />
           <span className={cn("truncate text-[13px]", unread ? "text-fg-secondary" : "text-fg-muted")}>{c.lastMessagePreview}</span>
           {unread && (
-            <span className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-brand-solid px-1.5 text-[11px] font-semibold text-white tabular" aria-label={`${c.unreadCount} unread`}>
+            <span className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-brand-solid px-1.5 text-[11px] font-semibold text-brand-on tabular" aria-label={`${c.unreadCount} unread`}>
               {c.unreadCount}
             </span>
           )}

@@ -22,12 +22,12 @@ function NavLink({ item, active, collapsed, onNavigate }: { item: NavItem; activ
       onClick={onNavigate}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "group relative flex h-8 items-center gap-2.5 rounded-md px-2.5 text-[13px] font-medium transition-colors duration-(--duration-fast) max-lg:h-11",
-        active ? "bg-surface text-fg shadow-sm" : "text-fg-secondary hover:bg-surface-hover hover:text-fg",
+        "group relative flex h-8 items-center gap-2.5 rounded-full px-3 text-[13px] font-medium transition-colors duration-(--duration-fast) max-lg:h-11",
+        active ? "bg-surface-active text-fg" : "text-fg-secondary hover:bg-surface-hover hover:text-fg",
         collapsed && "justify-center px-0",
       )}
     >
-      <Icon className={cn("size-[18px] shrink-0", active ? "text-brand" : "text-fg-muted group-hover:text-fg-secondary")} strokeWidth={1.9} aria-hidden />
+      <Icon className={cn("size-[18px] shrink-0", active ? "text-fg" : "text-fg-muted group-hover:text-fg-secondary")} strokeWidth={1.9} aria-hidden />
       <span className={cn("truncate", collapsed && "sr-only")}>{item.label}</span>
     </Link>
   );

@@ -3,6 +3,10 @@
 > Source of truth for DialBrio's visual language, interaction patterns and UI rules.
 > Components that contradict this document are bugs. Change this file first, then the code.
 >
+> **v3 · Mono (Sept 2026) — current.** Black, white and grey carry the brand; colour appears only for status.
+> Exact values live in the Figma handoff kit `docs/design-handoff/mono/` (style guide + DTCG token files), which
+> matches `globals.css`. The v2 notes below describe the previous green "Ledger" direction.
+>
 > **v2 (Sept 2026).** The v1 electric-blue-on-navy direction read as a generic AI SaaS template. v2 moves to
 > warm paper, green-black ink and one signal green, with typography carrying the hierarchy — the visual
 > language of the product/pricing documents (Features, Pricing, Business Model).
@@ -95,51 +99,42 @@ Clear space around the logo equals the height of the D's stem width × 2. Minimu
 
 ## 3. Color tokens
 
-Raw palette (do **not** use raw hex in components — use the semantic tokens in §4):
+**Mono.** There is no brand colour. The palette is an 18-step neutral ramp plus four status hues. Full ramp,
+hex values and measured contrast: `docs/design-handoff/mono/DialBrio-Mono-Style-Guide.html`.
 
 | Name | Hex | Role |
 | --- | --- | --- |
-| Ink | `#16201C` | Primary text on paper; dark panels |
-| Ink (dark bg) | `#111815` / `#171F1C` / `#1D2622` | Dark theme background → surface → elevated |
-| Paper | `#F7F6F2` | Light background (warm, not grey-blue) |
-| Paper sunken | `#F1EFE9` | Sidebar, wells, table headers |
-| Hairline | `#E4E1D8` / `#D3CFC3` | Borders |
-| Signal green | `#13A06B` (dark `#22B87C`) | Brand, primary action, connected, positive |
-| Green solid | `#0E7F55` | Filled buttons (white text 5.0:1) |
-| Amber | `#D98A1C` (text `#8F5205`) | Attention, callouts, warm leads, wrap-up |
-| Vermilion | `#C8442F` (text `#B8392A`) | Failed, at risk, DNC |
-| Slate blue | `#2F63A3` (dark `#7FA9E0`) | Info and ringing only |
-| Violet | `#6B4FD1` (dark `#A996F2`) | AI output only |
+| Ink | `#0A0A0A` | Text, primary buttons (light); canvas (dark) |
+| White | `#FFFFFF` | Canvas (light); text, primary buttons (dark) |
+| Frame grey | `#F5F5F5` / `#060606` | Sidebar, top bar, hero panel (light / dark) |
+| Muted grey | `#6B6B6B` / `#8A8A8A` | Labels, captions (light / dark) |
+| Accent grey | `#8A8A8A` | Second line of large headlines only (24px+ bold) |
+| Green | `#0B7A52` / `#3FD196` | Connected, success |
+| Amber | `#8A5A00` / `#E6A646` | Wrap-up, warning |
+| Red | `#B8392A` / `#F07A62`, solid `#C23B2A` | Failed, DNC, danger |
+| Blue | `#2F63A3` / `#7FA9E0` | Ringing, info |
 
-There is exactly one brand colour. Blue is an info colour, not a brand colour.
-
-### Contrast
-
-All text tokens meet WCAG 2.2 AA (4.5:1) on their intended surface. Checked pairs: white on green solid
-5.02 · green text on white 6.55 · muted `#5E6863` on paper 5.34 · dark muted `#8A948E` on `#1A2420` 5.09 ·
-amber text 5.00 · vermilion text 5.74 · white on danger solid 5.31. Signal green `#13A06B` is **never** used
-for small text on white (3.35:1) — use `--brand-text`.
+Every text pair passes WCAG 2.2 AA (26 measured checks in the style guide). Input borders use
+`--border-input` (`#949494` / `#6B6B6B`) for the 3:1 UI-boundary requirement.
 
 ## 4. Semantic colors
 
-Defined for both themes in `globals.css`, exposed to Tailwind via `@theme inline`
-(`bg-surface`, `text-fg-muted`, `border-border`, `bg-sidebar` …).
+Defined for both themes in `globals.css`; names map 1:1 to the Figma variables in the handoff kit.
 
 | Token | Light | Dark | Purpose |
 | --- | --- | --- | --- |
-| `--background` | `#F7F6F2` | `#111815` | Workspace canvas |
-| `--sidebar` | `#F1EFE9` | `#131A17` | App frame: sidebar + top bar |
-| `--surface` | `#FFFFFF` | `#171F1C` | Cards, panels, tables |
-| `--surface-elevated` | `#FFFFFF` + shadow | `#1D2622` | Menus, drawers, dialogs |
-| `--surface-sunken` | `#F1EFE9` | `#131A17` | Inputs, wells, table header |
-| `--fg` / `--fg-secondary` / `--fg-muted` | `#16201C` / `#45504B` / `#5E6863` | `#ECEEE9` / `#AAB2AC` / `#8A948E` | Text |
-| `--border` / `--border-strong` | `#E4E1D8` / `#D3CFC3` | `#26302C` / `#34403B` | Hairlines |
-| `--brand` / `--brand-solid` / `--brand-soft` / `--brand-text` | green family | green family | Brand, primary action |
-| `--success` `--warning` `--danger` `--info` (+ `-soft`, `-text`, `-solid`) | | | Status |
-| `--ai` / `--ai-soft` / `--ai-text` | violet | violet | AI output only |
-| `--call-ringing` / `-connected` / `-wrap` / `-ended` / `-failed` | blue / green / amber / muted / vermilion | | Call state |
-| `--lead-fresh` / `-warm` / `-aged` / `-zombie` | green / amber / clay / grey | | Lead lifecycle |
-| `--chart-1..6` | green, ink, violet, amber, blue, sand | | Series (§19) |
+| `--background` | `#FFFFFF` | `#0A0A0A` | Workspace canvas |
+| `--sidebar` | `#F5F5F5` | `#060606` | App frame, marketing hero panel |
+| `--surface` / `--surface-elevated` | `#FFFFFF` | `#141414` / `#1C1C1C` | Cards / menus, dialogs |
+| `--surface-sunken` | `#F5F5F5` | `#0F0F0F` | Wells, table headers |
+| `--surface-hover` / `--surface-active` | `#F0F0F0` / `#E8E8E8` | `#1C1C1C` / `#2A2A2A` | Hover / selected |
+| `--fg` / `--fg-secondary` / `--fg-muted` | `#0A0A0A` / `#4D4D4D` / `#6B6B6B` | `#FFFFFF` / `#B3B3B3` / `#8A8A8A` | Text |
+| `--fg-accent` | `#8A8A8A` | `#8A8A8A` | Grey headline second line |
+| `--border` / `--border-strong` / `--border-input` | `#E8E8E8` / `#D4D4D4` / `#949494` | `#2A2A2A` / `#4D4D4D` / `#6B6B6B` | Hairlines / emphasis / inputs |
+| `--brand` / `--brand-solid` / `--brand-on` | `#0A0A0A` / `#0A0A0A` / `#FFFFFF` | `#FFFFFF` / `#FFFFFF` / `#0A0A0A` | Primary button fill and its label |
+| status `--success` `--warning` `--danger` `--info` (+ `-soft`, `-text`, `-solid`) | see §3 | see §3 | The only colour in the product |
+
+Primary buttons must use `text-brand-on`, never `text-white` (the fill flips to white in dark mode).
 
 ## 5. Typography
 
@@ -189,12 +184,11 @@ Tabular figures (`tabular`) are for changing numbers in sans/mono; the display f
 | Token | Value | Use |
 | --- | --- | --- |
 | `--radius-xs` | 4px | Checkboxes, keyboard hints |
-| `--radius-sm` | 6px | Small controls |
-| badge | 5px | Badges and spec chips (not pills) |
-| button | 7px | Buttons, inputs |
-| `--radius-lg` | 10px | Cards, panels, popovers |
-| `--radius-xl` | 14px | Drawers, dialogs, the inset workspace corner |
-| `full` | 9999px | Avatars, status dots only |
+| `--radius-sm` | 6px | Small tags |
+| inputs | 10px | Inputs, selects, textareas, disposition tiles |
+| `--radius-lg` | 12px | Cards, panels, tables, popovers |
+| `--radius-xl` | 16px | Dialogs, drawers, marketing panels |
+| `full` | 9999px | **Buttons, badges, nav items, search, segmented controls, tabs pills, avatars** |
 
 ## 8. Shadows
 
@@ -298,7 +292,7 @@ Touch targets are ≥ 44px below `lg` (`min-h-11` on interactive rows and icon b
   `--background` with a 14px top-left radius and hairline border: the content reads as the page, the frame
   as the desk it sits on.
 - Sidebar groups: Primary (no label), Intelligence, Operations, Admin, with group labels in sentence case.
-- Active item: `--surface` fill + `--shadow-sm`, icon in `--brand`. No left accent bar, no tinted fill.
+- Active item: pill with `--surface-active` fill, `--fg` text and icon. No left accent bar, no colour.
 - Org/sub-account switcher at the top (ink monogram square), profile at the bottom, `⌘\` collapses.
 - Items the role cannot access are hidden, not disabled.
 - Top bar: breadcrumb (sub-account / page), `⌘K` search, live sync indicator, notifications, help.
@@ -372,12 +366,10 @@ Badge anatomy: 22px pill, soft background, `-text` colour, 12px/500 label, optio
 
 ## 19. Charts
 
-- Recharts, loaded with `next/dynamic` on heavy pages.
-- Titles state the business question ("Is call volume turning into conversations?").
-- Series order: `--chart-1` green (primary measure), `--chart-2` ink (comparison), `--chart-4` amber,
-  `--chart-5` slate blue, `--chart-6` sand. `--chart-3` violet is reserved for AI-derived series.
-- 1.5–2px strokes, no gradients (flat fill of 10% at most), horizontal gridlines only, 12px muted axis text,
-  mono values in tooltips, a screen-reader summary per chart. Max 4 series; more means a table.
+- Recharts, loaded with `next/dynamic` on heavy pages. Titles state the business question.
+- Mono series order: `--chart-1` ink (primary measure), `--chart-2` grey (comparison), `--chart-3` dark grey,
+  then `--chart-4` green and `--chart-5` amber only when the series *is* a status (connected, wrap-up).
+- 1.5–2px strokes, no gradients, horizontal gridlines only, mono values in tooltips, screen-reader summary.
 
 ## 20. Dialer-specific UI
 
@@ -423,10 +415,12 @@ Target: WCAG 2.2 AA.
 
 ## 22. Dark / light rules
 
-- **Light is the default** (warm paper). Dark is a green-black ink theme, not navy and not an inversion.
-- Dark depth comes from surface steps (`#111815 → #171F1C → #1D2622`) and borders, never shadows or glow.
-- Status hues shift brighter in dark; `-text` tokens carry contrast in both.
-- Marketing alternates forced sections: `className="dark"` for ink panels, `className="light"` for paper.
+- **Light is the default**: white canvas, `#F5F5F5` frame, black text and buttons.
+- **Dark** is true near-black `#0A0A0A` (never navy or tinted); cards step up to `#141414` and `#1C1C1C`.
+- Buttons invert: black fill + white label in light, white fill + black label in dark (`--brand-on`).
+- Status hues brighten in dark; `-soft` fills are opaque tints so Figma needs no alpha.
+- Marketing: heroes use the light grey panel (`InkPanel tone="paper"`) with a grey second headline line;
+  black panels (`tone="ink"`) are kept for contrast sections (compliance, final CTA, sign-in).
 
 ## 23. Examples of correct usage
 

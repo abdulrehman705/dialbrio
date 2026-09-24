@@ -7,175 +7,182 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ── Light theme: warm paper, ink text, one signal green ───────────────── */
+/* ── Light theme: DialBrio Mono (docs/design-handoff/mono) ─────────────────
+ * Black and white carry the brand; colour appears only for status. */
 :root,
 .light {
   color-scheme: light;
 
-  --background: #f7f6f2;
+  --background: #ffffff;
   --surface: #ffffff;
   --surface-elevated: #ffffff;
-  --surface-sunken: #f1efe9;
-  --surface-hover: rgb(22 32 28 / 0.04);
-  --surface-active: rgb(22 32 28 / 0.07);
-  --sidebar: #f1efe9;
+  --surface-sunken: #f5f5f5;
+  --surface-hover: #f0f0f0;
+  --surface-active: #e8e8e8;
+  --sidebar: #f5f5f5;
 
-  --fg: #16201c;
-  --fg-secondary: #45504b;
-  --fg-muted: #5e6863;
-  --fg-inverse: #f3f4ef;
+  --fg: #0a0a0a;
+  --fg-secondary: #4d4d4d;
+  --fg-muted: #6b6b6b;
+  --fg-accent: #8a8a8a; /* grey second line of large headlines only (24px+ bold) */
+  --fg-inverse: #ffffff;
 
-  --border: #e4e1d8;
-  --border-strong: #d3cfc3;
+  --border: #e8e8e8;
+  --border-strong: #d4d4d4;
+  --border-input: #949494;
 
-  --brand: #13a06b;
-  --brand-solid: #0e7f55;
-  --brand-solid-hover: #0b6b47;
-  --brand-soft: #e5f3ec;
-  --brand-soft-strong: #d2ebdf;
-  --brand-text: #0b6b47;
-  --ring: #13a06b;
+  --brand: #0a0a0a;
+  --brand-solid: #0a0a0a;
+  --brand-solid-hover: #2a2a2a;
+  --brand-on: #ffffff;
+  --brand-soft: #f0f0f0;
+  --brand-soft-strong: #e8e8e8;
+  --brand-text: #0a0a0a;
+  --ring: #0a0a0a;
 
-  --ai: #6b4fd1;
-  --ai-soft: #efebfb;
-  --ai-text: #5a3fc0;
+  --ai: #4d4d4d;
+  --ai-soft: #f0f0f0;
+  --ai-text: #0a0a0a;
 
-  --success: #13a06b;
-  --success-soft: #e5f3ec;
-  --success-text: #0b6b47;
-  --success-solid: #0e7f55;
-  --success-solid-hover: #0b6b47;
-  --warning: #d98a1c;
-  --warning-soft: #fbefd9;
-  --warning-text: #8f5205;
-  --danger: #c8442f;
+  --success: #0b7a52;
+  --success-soft: #e1f2ea;
+  --success-text: #0b7a52;
+  --success-solid: #0b7a52;
+  --success-solid-hover: #096644;
+  --warning: #b37400;
+  --warning-soft: #f9edcf;
+  --warning-text: #8a5a00;
+  --danger: #c23b2a;
   --danger-solid: #c23b2a;
   --danger-solid-hover: #a83222;
-  --danger-soft: #fbe9e5;
+  --danger-soft: #fbe7e3;
   --danger-text: #b8392a;
   --info: #2f63a3;
-  --info-soft: #e8eff8;
+  --info-soft: #e6edf7;
   --info-text: #2f63a3;
-  --neutral-soft: #efede7;
-  --neutral-text: #45504b;
+  --neutral-soft: #f0f0f0;
+  --neutral-text: #4d4d4d;
 
   --call-ringing: #2f63a3;
-  --call-connected: #13a06b;
-  --call-wrap: #d98a1c;
-  --call-ended: #5e6863;
-  --call-failed: #c8442f;
+  --call-connected: #0b7a52;
+  --call-wrap: #b37400;
+  --call-ended: #6b6b6b;
+  --call-failed: #c23b2a;
 
-  --lead-fresh: #13a06b;
-  --lead-fresh-soft: #e5f3ec;
-  --lead-fresh-text: #0b6b47;
-  --lead-warm: #d98a1c;
-  --lead-warm-soft: #fbefd9;
-  --lead-warm-text: #8f5205;
-  --lead-aged: #7d6f5b;
-  --lead-aged-soft: #f1ece3;
-  --lead-aged-text: #625644;
-  --lead-zombie: #8a918d;
-  --lead-zombie-soft: #efefec;
-  --lead-zombie-text: #5e6863;
+  --lead-fresh: #0a0a0a;
+  --lead-fresh-soft: #f0f0f0;
+  --lead-fresh-text: #0a0a0a;
+  --lead-warm: #b37400;
+  --lead-warm-soft: #f9edcf;
+  --lead-warm-text: #8a5a00;
+  --lead-aged: #6b6b6b;
+  --lead-aged-soft: #f0f0f0;
+  --lead-aged-text: #4d4d4d;
+  --lead-zombie: #949494;
+  --lead-zombie-soft: #fafafa;
+  --lead-zombie-text: #6b6b6b;
 
-  --chart-1: #13a06b;
-  --chart-2: #16201c;
-  --chart-3: #6b4fd1;
-  --chart-4: #d98a1c;
-  --chart-5: #2f63a3;
-  --chart-6: #b9b4a7;
+  --chart-1: #0a0a0a;
+  --chart-2: #8a8a8a;
+  --chart-3: #4d4d4d;
+  --chart-4: #0b7a52;
+  --chart-5: #b37400;
+  --chart-6: #d4d4d4;
 
-  --overlay: rgb(22 32 28 / 0.35);
+  --overlay: rgb(10 10 10 / 0.4);
 
-  --shadow-xs: 0 1px 0 rgb(22 32 28 / 0.04);
-  --shadow-sm: 0 1px 2px rgb(22 32 28 / 0.06), 0 0 0 1px rgb(22 32 28 / 0.02);
-  --shadow-md: 0 6px 20px -8px rgb(22 32 28 / 0.14), 0 2px 4px -2px rgb(22 32 28 / 0.06);
-  --shadow-lg: 0 20px 44px -16px rgb(22 32 28 / 0.22);
+  --shadow-xs: none;
+  --shadow-sm: 0 1px 2px rgb(10 10 10 / 0.06);
+  --shadow-md: 0 4px 16px -6px rgb(10 10 10 / 0.12);
+  --shadow-lg: 0 24px 48px -16px rgb(10 10 10 / 0.22);
 }
 
-/* ── Dark theme: green-black ink, not navy ─────────────────────────────── */
+/* ── Dark theme: Mono near-black (#0A0A0A), not navy ───────────────────── */
 .dark {
   color-scheme: dark;
 
-  --background: #111815;
-  --surface: #171f1c;
-  --surface-elevated: #1d2622;
-  --surface-sunken: #131a17;
-  --surface-hover: rgb(236 239 234 / 0.04);
-  --surface-active: rgb(236 239 234 / 0.08);
-  --sidebar: #131a17;
+  --background: #0a0a0a;
+  --surface: #141414;
+  --surface-elevated: #1c1c1c;
+  --surface-sunken: #0f0f0f;
+  --surface-hover: #1c1c1c;
+  --surface-active: #2a2a2a;
+  --sidebar: #060606;
 
-  --fg: #eceee9;
-  --fg-secondary: #aab2ac;
-  --fg-muted: #8a948e;
-  --fg-inverse: #16201c;
+  --fg: #ffffff;
+  --fg-secondary: #b3b3b3;
+  --fg-muted: #8a8a8a;
+  --fg-accent: #8a8a8a;
+  --fg-inverse: #0a0a0a;
 
-  --border: #26302c;
-  --border-strong: #34403b;
+  --border: #2a2a2a;
+  --border-strong: #4d4d4d;
+  --border-input: #6b6b6b;
 
-  --brand: #22b87c;
-  --brand-solid: #0e7f55;
-  --brand-solid-hover: #10905f;
-  --brand-soft: rgb(34 184 124 / 0.12);
-  --brand-soft-strong: rgb(34 184 124 / 0.2);
-  --brand-text: #3fd196;
-  --ring: #3fd196;
+  --brand: #ffffff;
+  --brand-solid: #ffffff;
+  --brand-solid-hover: #e8e8e8;
+  --brand-on: #0a0a0a;
+  --brand-soft: #1c1c1c;
+  --brand-soft-strong: #2a2a2a;
+  --brand-text: #ffffff;
+  --ring: #ffffff;
 
-  --ai: #8b74e6;
-  --ai-soft: rgb(139 116 230 / 0.14);
-  --ai-text: #a996f2;
+  --ai: #b3b3b3;
+  --ai-soft: #1c1c1c;
+  --ai-text: #ffffff;
 
-  --success: #22b87c;
-  --success-soft: rgb(34 184 124 / 0.12);
+  --success: #3fd196;
+  --success-soft: #1a2e26;
   --success-text: #3fd196;
-  --success-solid: #0e7f55;
-  --success-solid-hover: #10905f;
+  --success-solid: #0b7a52;
+  --success-solid-hover: #0d8c5e;
   --warning: #e6a646;
-  --warning-soft: rgb(230 166 70 / 0.13);
+  --warning-soft: #302719;
   --warning-text: #e6a646;
-  --danger: #e8654e;
+  --danger: #f07a62;
   --danger-solid: #c23b2a;
   --danger-solid-hover: #d04734;
-  --danger-soft: rgb(232 101 78 / 0.13);
+  --danger-soft: #331f1c;
   --danger-text: #f07a62;
   --info: #7fa9e0;
-  --info-soft: rgb(127 169 224 / 0.13);
+  --info-soft: #1e2632;
   --info-text: #7fa9e0;
-  --neutral-soft: rgb(236 239 234 / 0.07);
-  --neutral-text: #aab2ac;
+  --neutral-soft: #1c1c1c;
+  --neutral-text: #b3b3b3;
 
   --call-ringing: #7fa9e0;
-  --call-connected: #22b87c;
+  --call-connected: #3fd196;
   --call-wrap: #e6a646;
-  --call-ended: #8a948e;
-  --call-failed: #e8654e;
+  --call-ended: #8a8a8a;
+  --call-failed: #f07a62;
 
-  --lead-fresh: #22b87c;
-  --lead-fresh-soft: rgb(34 184 124 / 0.12);
-  --lead-fresh-text: #3fd196;
+  --lead-fresh: #ffffff;
+  --lead-fresh-soft: #2a2a2a;
+  --lead-fresh-text: #ffffff;
   --lead-warm: #e6a646;
-  --lead-warm-soft: rgb(230 166 70 / 0.13);
+  --lead-warm-soft: #302719;
   --lead-warm-text: #e6a646;
-  --lead-aged: #b3a58e;
-  --lead-aged-soft: rgb(179 165 142 / 0.13);
-  --lead-aged-text: #c9bca6;
-  --lead-zombie: #8a948e;
-  --lead-zombie-soft: rgb(236 239 234 / 0.06);
-  --lead-zombie-text: #9aa39d;
+  --lead-aged: #8a8a8a;
+  --lead-aged-soft: #1c1c1c;
+  --lead-aged-text: #b3b3b3;
+  --lead-zombie: #6b6b6b;
+  --lead-zombie-soft: #141414;
+  --lead-zombie-text: #8a8a8a;
 
-  --chart-1: #22b87c;
-  --chart-2: #d7dcd6;
-  --chart-3: #8b74e6;
-  --chart-4: #e6a646;
-  --chart-5: #7fa9e0;
-  --chart-6: #56615b;
+  --chart-1: #ffffff;
+  --chart-2: #8a8a8a;
+  --chart-3: #b3b3b3;
+  --chart-4: #3fd196;
+  --chart-5: #e6a646;
+  --chart-6: #2a2a2a;
 
-  --overlay: rgb(5 9 7 / 0.66);
+  --overlay: rgb(0 0 0 / 0.7);
 
   --shadow-xs: none;
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
-  --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.55);
-  --shadow-lg: 0 24px 48px -16px rgb(0 0 0 / 0.65);
+  --shadow-sm: none;
+  --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 24px 48px -16px rgb(0 0 0 / 0.7);
 }
 
 /* ── Tailwind bridge ──────────────────────────────────────────────────── */
@@ -195,14 +202,17 @@
   --color-fg-secondary: var(--fg-secondary);
   --color-fg-muted: var(--fg-muted);
   --color-fg-inverse: var(--fg-inverse);
+  --color-fg-accent: var(--fg-accent);
 
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
+  --color-border-input: var(--border-input);
   --color-ring: var(--ring);
 
   --color-brand: var(--brand);
   --color-brand-solid: var(--brand-solid);
   --color-brand-solid-hover: var(--brand-solid-hover);
+  --color-brand-on: var(--brand-on);
   --color-brand-soft: var(--brand-soft);
   --color-brand-soft-strong: var(--brand-soft-strong);
   --color-brand-text: var(--brand-text);
@@ -261,8 +271,8 @@
   --radius-xs: 4px;
   --radius-sm: 6px;
   --radius-md: 8px;
-  --radius-lg: 10px;
-  --radius-xl: 14px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
@@ -379,7 +389,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--brand-text);
+    color: var(--fg-muted);
   }
   .text-balance {
     text-wrap: balance;

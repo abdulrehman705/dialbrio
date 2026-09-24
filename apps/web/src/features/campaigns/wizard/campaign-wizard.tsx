@@ -131,7 +131,7 @@ export function CampaignWizard() {
                       <span
                         className={cn(
                           "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border font-mono text-[10px] font-semibold",
-                          active ? "border-brand bg-brand-solid text-white" : done ? "border-success bg-success-soft text-success-text" : "border-border-strong text-fg-muted",
+                          active ? "border-brand bg-brand-solid text-brand-on" : done ? "border-success bg-success-soft text-success-text" : "border-border-strong text-fg-muted",
                         )}
                       >
                         {done && !active ? <Check className="size-3" strokeWidth={3} aria-label="Completed" /> : i + 1}

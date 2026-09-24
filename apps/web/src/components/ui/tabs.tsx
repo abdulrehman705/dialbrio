@@ -26,14 +26,14 @@ export function TabsTrigger({ className, ...props }: React.ComponentProps<typeof
 
 /** Segmented control for switching views/filters within a card. */
 export function SegmentedList({ className, ...props }: React.ComponentProps<typeof T.List>) {
-  return <T.List className={cn("inline-flex h-8 items-center gap-0.5 rounded-md bg-surface-sunken p-0.5", className)} {...props} />;
+  return <T.List className={cn("inline-flex h-8 items-center gap-0.5 rounded-full bg-surface-sunken p-0.5", className)} {...props} />;
 }
 
 export function SegmentedTrigger({ className, ...props }: React.ComponentProps<typeof T.Trigger>) {
   return (
     <T.Trigger
       className={cn(
-        "inline-flex h-7 items-center gap-1.5 rounded-[5px] px-2.5 text-xs font-medium text-fg-muted transition-colors hover:text-fg data-[state=active]:bg-surface data-[state=active]:text-fg data-[state=active]:shadow-sm [&_svg]:size-3.5",
+        "inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium text-fg-muted transition-colors hover:text-fg data-[state=active]:bg-surface data-[state=active]:text-fg data-[state=active]:shadow-sm [&_svg]:size-3.5",
         className,
       )}
       {...props}

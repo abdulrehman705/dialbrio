@@ -30,9 +30,12 @@ export function Section({ tone = "light", surface, id, className, children, ...r
   );
 }
 
-/** Ink panel inset from the page edges, like the brand documents. */
-export function InkPanel({ className, children, as: As = "div" }: { className?: string; children: React.ReactNode; as?: "div" | "section" }) {
-  return <As className={cn("dark rounded-2xl bg-background text-fg", className)}>{children}</As>;
+/**
+ * Panel inset from the page edges. Mono: "paper" is the light grey hero panel (default for heroes);
+ * "ink" is the black panel used for contrast sections (compliance, final CTA, sign-in).
+ */
+export function InkPanel({ className, children, as: As = "div", tone = "ink" }: { className?: string; children: React.ReactNode; as?: "div" | "section"; tone?: "ink" | "paper" }) {
+  return <As className={cn(tone === "ink" ? "dark bg-background" : "light bg-sidebar", "rounded-2xl text-fg", className)}>{children}</As>;
 }
 
 /** Mono section label: "01 · Dialing engine". */

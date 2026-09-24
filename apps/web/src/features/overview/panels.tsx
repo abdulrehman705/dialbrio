@@ -287,7 +287,7 @@ export function RecentConversationsCard({ data, loading, className, personal }: 
                     <span>{LEAD_STATE_META[c.leadState].label}</span>
                     <span aria-hidden>·</span>
                     <span>{c.assigneeName ?? "Unassigned"}</span>
-                    {c.unreadCount > 0 && <span className="ml-auto rounded-[4px] bg-brand-solid px-1.5 py-px font-mono text-[10px] text-white">{c.unreadCount} new</span>}
+                    {c.unreadCount > 0 && <span className="ml-auto rounded-[4px] bg-brand-solid px-1.5 py-px font-mono text-[10px] text-brand-on">{c.unreadCount} new</span>}
                   </span>
                 </span>
               </Link>
