@@ -7,16 +7,16 @@ interface AuthShellProps {
   description: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  aside?: "login" | "trial";
+  aside?: "login" | "waitlist";
 }
 
-const trialPoints = [
-  ["14 days", "full platform, every feature"],
+const waitlistPoints = [
+  ["Early access", "we open to teams in batches"],
+  ["14 days", "free trial when your workspace opens"],
   ["500 minutes", "free, on your own leads"],
-  ["No card", "month-to-month after that"],
 ];
 
-/** Split layout for sign-in / trial: inset ink panel beside a paper form. */
+/** Split layout for sign-in / waitlist: inset ink panel beside a paper form. */
 export function AuthShell({ title, description, children, footer, aside = "login" }: AuthShellProps) {
   return (
     <div className="light grid min-h-dvh bg-background text-fg lg:grid-cols-[1fr_minmax(480px,560px)]">
@@ -25,12 +25,12 @@ export function AuthShell({ title, description, children, footer, aside = "login
           <Link href="/" aria-label="DialBrio home" className="self-start rounded-md">
             <Logo markSize={28} />
           </Link>
-          {aside === "trial" ? (
+          {aside === "waitlist" ? (
             <div className="max-w-md">
-              <p className="eyebrow">Free trial</p>
+              <p className="eyebrow">Waitlist</p>
               <p className="mt-4 font-display text-[36px] leading-[1.08] font-bold tracking-[-0.035em]">See it dial your own list.</p>
               <dl className="mt-10 divide-y divide-border border-y border-border">
-                {trialPoints.map(([k, v]) => (
+                {waitlistPoints.map(([k, v]) => (
                   <div key={k} className="flex items-baseline justify-between gap-6 py-4">
                     <dt className="font-display text-[22px] font-bold tracking-[-0.02em] text-brand-text">{k}</dt>
                     <dd className="text-right text-[14px] text-fg-secondary">{v}</dd>

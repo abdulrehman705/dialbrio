@@ -36,8 +36,8 @@ export async function Hero() {
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild variant="primary" size="lg">
-                <Link href="/get-started">
-                  Start free trial <ArrowRight />
+                <Link href="/waitlist">
+                  Join waitlist <ArrowRight />
                 </Link>
               </Button>
               <Button asChild variant="ghost" size="lg" className="text-fg">
@@ -487,8 +487,8 @@ export async function FinalCta() {
             </p>
           </div>
           <Button asChild variant="primary" size="lg" className="shrink-0">
-            <Link href="/get-started">
-              Start free trial <ArrowRight />
+            <Link href="/waitlist">
+              Join waitlist <ArrowRight />
             </Link>
           </Button>
         </InkPanel>

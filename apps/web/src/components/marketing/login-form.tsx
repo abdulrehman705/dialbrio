@@ -106,8 +106,8 @@ export function LoginForm() {
       </DemoNote>
       <p className="text-center text-[13px] text-fg-muted">
         New to DialBrio?{" "}
-        <Link href="/get-started" className="font-medium text-brand-text hover:underline">
-          Start a free trial
+        <Link href="/waitlist" className="font-medium text-brand-text hover:underline">
+          Join the waitlist
         </Link>
       </p>
     </div>

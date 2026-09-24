@@ -100,7 +100,7 @@ export default async function PricingPage() {
               </p>
             </div>
             <Button asChild variant="secondary" size="lg" className="shrink-0">
-              <Link href="/get-started">Start free trial</Link>
+              <Link href="/waitlist">Join waitlist</Link>
             </Button>
           </div>
           </Reveal>

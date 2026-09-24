@@ -343,7 +343,7 @@ billing data still uses the code price book; the real billing service (Phase 7) 
 
 **Freshness.** `defineLive` + `<SanityLive />` (root layout) keep pages cached and revalidate them when content is
 published; the browser holds one `text/event-stream` connection to the Live Content API. CORS origins configured:
-`localhost:3000`, `localhost:3200`, `localhost:3333` — add the production URL before launch
+`localhost:3000`, `localhost:3200`, `localhost:3333`, `https://dialbrio.vercel.app`, `https://dialbrio.com`, `https://www.dialbrio.com` — add every new production or custom domain
 (`pnpm --filter @dialbrio/studio exec sanity cors add https://… --credentials`).
 
 **Types.** TypeGen is configured in `studio/sanity.cli.ts` to scan `apps/web/src` and write

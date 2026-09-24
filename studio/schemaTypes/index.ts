@@ -9,6 +9,7 @@ import {post} from './documents/post'
 import {pricingPage} from './documents/pricing-page'
 import {siteSettings} from './documents/site-settings'
 import {usageRate} from './documents/usage-rate'
+import {waitlistEntry} from './documents/waitlist-entry'
 import {blockContent} from './objects/block-content'
 import {planHighlight} from './objects/plan-highlight'
 import {seo} from './objects/seo'
@@ -31,6 +32,8 @@ export const schemaTypes = [
   category,
   customerStory,
   changelogEntry,
+  // Leads
+  waitlistEntry,
   // Objects
   seo,
   blockContent,

@@ -44,7 +44,7 @@ export function SiteHeader() {
             <Link href="/login">Log in</Link>
           </Button>
           <Button asChild variant="primary" size="sm" className="max-sm:hidden">
-            <Link href="/get-started">Start free trial</Link>
+            <Link href="/waitlist">Join waitlist</Link>
           </Button>
           <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)}>
             <Menu />
@@ -68,7 +68,7 @@ export function SiteHeader() {
           </nav>
           <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
             <Button asChild variant="primary" size="lg">
-              <Link href="/get-started">Start free trial</Link>
+              <Link href="/waitlist">Join waitlist</Link>
             </Button>
             <Button asChild variant="secondary" size="lg">
               <Link href="/login">Log in</Link>

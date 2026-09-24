@@ -69,7 +69,7 @@ function PlanCard({ plan, plans, interval, annualDiscount }: { plan: Plan; plans
       </ul>
 
       <Button asChild variant={plan.popular ? "primary" : "secondary"} size="lg" className="mt-7 w-full">
-        <Link href={plan.cta === "sales" ? "/get-started?plan=enterprise" : `/get-started?plan=${plan.id}`}>{plan.cta === "sales" ? "Talk to sales" : "Start free trial"}</Link>
+        <Link href={`/waitlist?plan=${plan.id}`}>{plan.cta === "sales" ? "Talk to sales" : "Join waitlist"}</Link>
       </Button>
     </article>
   );

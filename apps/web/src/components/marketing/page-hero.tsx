@@ -26,8 +26,8 @@ export async function PageHero({ eyebrow, title, description, cta = true, childr
           {cta && (
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild variant="primary" size="lg">
-                <Link href="/get-started">
-                  Start free trial <ArrowRight />
+                <Link href="/waitlist">
+                  Join waitlist <ArrowRight />
                 </Link>
               </Button>
               <p className="font-mono text-xs text-fg-muted sm:ml-3">{trialLine(trial)}</p>

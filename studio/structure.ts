@@ -3,6 +3,7 @@ import type {ComponentType} from 'react'
 import {CogIcon} from '@sanity/icons/Cog'
 import {CreditCardIcon} from '@sanity/icons/CreditCard'
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
+import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {SINGLETON_TYPES} from './schemaTypes'
 
 /** Singletons are locked to a fixed document id equal to their type name. */
@@ -24,6 +25,7 @@ const GROUPED = new Set<string>([
   'category',
   'customerStory',
   'changelogEntry',
+  'waitlistEntry',
 ])
 
 export const structure: StructureResolver = (S) =>
@@ -62,6 +64,8 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('category').title('Categories'),
             ]),
         ),
+      S.divider(),
+      S.documentTypeListItem('waitlistEntry').title('Waitlist').icon(EnvelopeIcon),
       // Anything added later that isn't grouped above.
       ...S.documentTypeListItems().filter((item) => !GROUPED.has(item.getId() as string)),
     ])

@@ -1,13 +1,7 @@
-import type { Metadata } from "next";
-import { AuthShell } from "@/components/marketing/auth-shell";
-import { GetStartedForm } from "@/components/marketing/get-started-form";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Start free trial" };
-
-export default function GetStartedPage() {
-  return (
-    <AuthShell aside="trial" title="Start your free trial" description="14 days, 500 free minutes, no credit card. Takes under a minute.">
-      <GetStartedForm />
-    </AuthShell>
-  );
+/** Replaced by the waitlist. Kept as a redirect so existing links (and ?plan=) keep working. */
+export default async function GetStartedPage({ searchParams }: { searchParams: Promise<{ plan?: string }> }) {
+  const { plan } = await searchParams;
+  redirect(plan ? `/waitlist?plan=${encodeURIComponent(plan)}` : "/waitlist");
 }
