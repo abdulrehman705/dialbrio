@@ -35,8 +35,6 @@ export const usageRate = defineType({
     }),
     defineField({name: 'unit', title: 'Unit', type: 'string', description: 'e.g. min, segment, number, seat.', validation: (rule) => rule.required()}),
     defineField({name: 'displayRate', title: 'Display rate', type: 'string', description: 'As shown on the site, e.g. "1.5¢ / min".', validation: (rule) => rule.required()}),
-    defineField({name: 'competitorRate', title: 'Competitor rate', type: 'string', description: 'e.g. "2¢ / min" or "not published".'}),
-    defineField({name: 'savingsLabel', title: 'Savings label', type: 'string', description: 'Optional chip, e.g. "−25%".'}),
     defineField({name: 'sortOrder', title: 'Sort order', type: 'number', validation: (rule) => rule.required().integer()}),
   ],
   orderings: [{title: 'Sort order', name: 'sortOrderAsc', by: [{field: 'sortOrder', direction: 'asc'}]}],

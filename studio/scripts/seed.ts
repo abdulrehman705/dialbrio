@@ -11,6 +11,8 @@ import {getCliClient} from 'sanity/cli'
 import {
   ANNUAL_DISCOUNT,
   COMPARISON,
+  COMPARISON_CHECKED_ON,
+  COMPETITORS,
   COMPARISON_FOOTNOTE,
   PLANS,
   PRICING_FAQ,
@@ -70,8 +72,6 @@ async function main() {
       unitPriceCents: r.unitMilliCents / 100,
       unit: r.unit,
       displayRate: r.rate,
-      competitorRate: r.competitor,
-      savingsLabel: r.savings,
       sortOrder: (i + 1) * 10,
     })
     console.log(`usage ${r.id}: created`)
@@ -87,9 +87,7 @@ async function main() {
       _type: 'comparisonRow',
       scenario: row.scenario,
       ours: row.us,
-      firstCompetitor: row.first,
-      secondCompetitor: row.second,
-      kind: row.emphasis ? 'cost' : 'feature',
+      competitorValues: COMPETITORS.map((c, j) => ({_type: 'competitorValue', _key: `c${j}`, competitor: c.name, value: row.values[c.name] ?? 'Not published'})),
       sortOrder: (i + 1) * 10,
     })
     console.log(`comparison "${row.scenario}": created`)
@@ -115,7 +113,8 @@ async function main() {
     _type: 'pricingPage',
     annualDiscountPercent: Math.round(ANNUAL_DISCOUNT * 100),
     trial: {days: TRIAL.days, freeMinutes: TRIAL.freeMinutes, cardRequired: TRIAL.cardRequired},
-    competitorLabels: {first: 'HotProspector', second: 'Kixie (per-seat)'},
+    competitors: COMPETITORS.map((c, j) => ({_type: 'competitor', _key: `k${j}`, name: c.name, sourceUrl: c.sourceUrl})),
+    comparisonCheckedOn: COMPARISON_CHECKED_ON,
     comparisonFootnote: COMPARISON_FOOTNOTE,
     faqs: faqIds.map((id, i) => ({_type: 'reference', _ref: id, _key: `f${i}`})),
   })

@@ -39,7 +39,7 @@ export const plan = defineType({
       description: 'Leave empty for custom.',
       validation: (rule) => rule.integer().min(0),
     }),
-    defineField({name: 'seatsNote', title: 'Seats note', type: 'string', description: 'e.g. "vs. 3 at HotProspector".'}),
+    defineField({name: 'seatsNote', title: 'Seats note', type: 'string', description: 'Optional short note after the seat count, e.g. "add more for $59 each".'}),
     defineField({
       name: 'includedAiMinutes',
       title: 'Included AI voice minutes',

@@ -34,15 +34,36 @@ export const pricingPage = defineType({
       ],
     }),
     defineField({
-      name: 'competitorLabels',
-      title: 'Competitor column labels',
-      type: 'object',
+      name: 'competitors',
+      title: 'Competitors',
+      type: 'array',
       group: 'comparison',
-      description: 'Headers for the two competitor columns in the comparison tables.',
-      fields: [
-        defineField({name: 'first', title: 'First competitor', type: 'string'}),
-        defineField({name: 'second', title: 'Second competitor', type: 'string'}),
+      description: 'Columns in the comparison table, in order. Only compare against what each vendor publishes.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'competitor',
+          fields: [
+            defineField({name: 'name', title: 'Name', type: 'string', validation: (rule) => rule.required()}),
+            defineField({
+              name: 'sourceUrl',
+              title: 'Pricing page',
+              type: 'url',
+              description: 'Where the published figures come from.',
+              validation: (rule) => rule.required().uri({scheme: ['https']}),
+            }),
+          ],
+          preview: {select: {title: 'name', subtitle: 'sourceUrl'}},
+        }),
       ],
+      validation: (rule) => rule.max(5),
+    }),
+    defineField({
+      name: 'comparisonCheckedOn',
+      title: 'Competitor prices checked on',
+      type: 'date',
+      group: 'comparison',
+      description: 'Shown in the source note under the table.',
     }),
     defineField({
       name: 'comparisonFootnote',

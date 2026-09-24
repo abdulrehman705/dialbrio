@@ -74,6 +74,21 @@ export type Seo = {
   };
 };
 
+export type WaitlistEntry = {
+  _id: string;
+  _type: "waitlistEntry";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  email?: string;
+  company?: string;
+  teamSize?: string;
+  crm?: string;
+  planInterest?: string;
+  submittedAt?: string;
+};
+
 export type ChangelogEntry = {
   _id: string;
   _type: "changelogEntry";
@@ -235,9 +250,12 @@ export type ComparisonRow = {
   _rev: string;
   scenario: string;
   ours: string;
-  firstCompetitor?: string;
-  secondCompetitor?: string;
-  kind?: "cost" | "feature";
+  competitorValues?: Array<{
+    competitor: string;
+    value: string;
+    _type: "competitorValue";
+    _key: string;
+  }>;
   sortOrder: number;
 };
 
@@ -258,8 +276,6 @@ export type UsageRate = {
   unitPriceCents: number;
   unit: string;
   displayRate: string;
-  competitorRate?: string;
-  savingsLabel?: string;
   sortOrder: number;
 };
 
@@ -313,10 +329,13 @@ export type PricingPage = {
     freeMinutes: number;
     cardRequired?: boolean;
   };
-  competitorLabels?: {
-    first?: string;
-    second?: string;
-  };
+  competitors?: Array<{
+    name: string;
+    sourceUrl: string;
+    _type: "competitor";
+    _key: string;
+  }>;
+  comparisonCheckedOn?: string;
   comparisonFootnote?: string;
   faqs?: Array<
     {
@@ -444,6 +463,7 @@ export type AllSanitySchemaTypes =
   | SanityImageAssetReference
   | BlockContent
   | Seo
+  | WaitlistEntry
   | ChangelogEntry
   | CustomerStory
   | SanityImageCrop
@@ -473,13 +493,14 @@ export type AllSanitySchemaTypes =
 
 // Source: ../apps/web/src/sanity/queries.ts
 // Variable: PRICE_BOOK_QUERY
-// Query: {  "page": *[_id == "pricingPage"][0]{    annualDiscountPercent,    trial{ days, freeMinutes, cardRequired },    competitorLabels{ first, second },    comparisonFootnote,    "faq": faqs[]->{ question, answer }  },  "plans": *[_type == "plan" && defined(planKey)] | order(sortOrder asc){    planKey, name, audience, monthlyPrice, includedSeats, seatsNote, includedAiMinutes,    "inheritsFrom": inheritsFrom->planKey,    highlights[]{ _key, text, availability, plannedNote },    cta, badge  },  "usageRates": *[_type == "usageRate" && defined(itemKey)] | order(sortOrder asc){    itemKey, label, unitPriceCents, unit, displayRate, competitorRate, savingsLabel  },  "comparison": *[_type == "comparisonRow"] | order(sortOrder asc){    scenario, ours, firstCompetitor, secondCompetitor, kind  }}
+// Query: {  "page": *[_id == "pricingPage"][0]{    annualDiscountPercent,    trial{ days, freeMinutes, cardRequired },    competitors[]{ name, sourceUrl },    comparisonCheckedOn,    comparisonFootnote,    "faq": faqs[]->{ question, answer }  },  "plans": *[_type == "plan" && defined(planKey)] | order(sortOrder asc){    planKey, name, audience, monthlyPrice, includedSeats, seatsNote, includedAiMinutes,    "inheritsFrom": inheritsFrom->planKey,    highlights[]{ _key, text, availability, plannedNote },    cta, badge  },  "usageRates": *[_type == "usageRate" && defined(itemKey)] | order(sortOrder asc){    itemKey, label, unitPriceCents, unit, displayRate  },  "comparison": *[_type == "comparisonRow"] | order(sortOrder asc){    scenario, ours, competitorValues[]{ competitor, value }  }}
 export type PRICE_BOOK_QUERY_RESULT = {
   page:
     | {
         annualDiscountPercent: null;
         trial: null;
-        competitorLabels: null;
+        competitors: null;
+        comparisonCheckedOn: null;
         comparisonFootnote: null;
         faq: null;
       }
@@ -490,10 +511,11 @@ export type PRICE_BOOK_QUERY_RESULT = {
           freeMinutes: number;
           cardRequired: boolean | null;
         } | null;
-        competitorLabels: {
-          first: string | null;
-          second: string | null;
-        } | null;
+        competitors: Array<{
+          name: string;
+          sourceUrl: string;
+        }> | null;
+        comparisonCheckedOn: string | null;
         comparisonFootnote: string | null;
         faq: Array<{
           question: string;
@@ -531,15 +553,14 @@ export type PRICE_BOOK_QUERY_RESULT = {
     unitPriceCents: number;
     unit: string;
     displayRate: string;
-    competitorRate: string | null;
-    savingsLabel: string | null;
   }>;
   comparison: Array<{
     scenario: string;
     ours: string;
-    firstCompetitor: string | null;
-    secondCompetitor: string | null;
-    kind: "cost" | "feature" | null;
+    competitorValues: Array<{
+      competitor: string;
+      value: string;
+    }> | null;
   }>;
 };
 
@@ -614,7 +635,7 @@ export type CHANGELOG_QUERY_RESULT = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '{\n  "page": *[_id == "pricingPage"][0]{\n    annualDiscountPercent,\n    trial{ days, freeMinutes, cardRequired },\n    competitorLabels{ first, second },\n    comparisonFootnote,\n    "faq": faqs[]->{ question, answer }\n  },\n  "plans": *[_type == "plan" && defined(planKey)] | order(sortOrder asc){\n    planKey, name, audience, monthlyPrice, includedSeats, seatsNote, includedAiMinutes,\n    "inheritsFrom": inheritsFrom->planKey,\n    highlights[]{ _key, text, availability, plannedNote },\n    cta, badge\n  },\n  "usageRates": *[_type == "usageRate" && defined(itemKey)] | order(sortOrder asc){\n    itemKey, label, unitPriceCents, unit, displayRate, competitorRate, savingsLabel\n  },\n  "comparison": *[_type == "comparisonRow"] | order(sortOrder asc){\n    scenario, ours, firstCompetitor, secondCompetitor, kind\n  }\n}': PRICE_BOOK_QUERY_RESULT;
+    '{\n  "page": *[_id == "pricingPage"][0]{\n    annualDiscountPercent,\n    trial{ days, freeMinutes, cardRequired },\n    competitors[]{ name, sourceUrl },\n    comparisonCheckedOn,\n    comparisonFootnote,\n    "faq": faqs[]->{ question, answer }\n  },\n  "plans": *[_type == "plan" && defined(planKey)] | order(sortOrder asc){\n    planKey, name, audience, monthlyPrice, includedSeats, seatsNote, includedAiMinutes,\n    "inheritsFrom": inheritsFrom->planKey,\n    highlights[]{ _key, text, availability, plannedNote },\n    cta, badge\n  },\n  "usageRates": *[_type == "usageRate" && defined(itemKey)] | order(sortOrder asc){\n    itemKey, label, unitPriceCents, unit, displayRate\n  },\n  "comparison": *[_type == "comparisonRow"] | order(sortOrder asc){\n    scenario, ours, competitorValues[]{ competitor, value }\n  }\n}': PRICE_BOOK_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current) && publishedAt <= now()] | order(publishedAt desc)[0...24]{\n  _id, title, "slug": slug.current, excerpt, publishedAt,\n  coverImage{ asset, alt, hotspot, crop },\n  "author": author->{ name, role },\n  "categories": categories[]->title\n}': POSTS_INDEX_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug][0]{\n  _id, title, "slug": slug.current, excerpt, publishedAt, body,\n  coverImage{ asset, alt, hotspot, crop },\n  "author": author->{ name, role, bio },\n  "categories": categories[]->title,\n  seo{ title, description }\n}': POST_DETAIL_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current)]{ "slug": slug.current }': POST_SLUGS_QUERY_RESULT;

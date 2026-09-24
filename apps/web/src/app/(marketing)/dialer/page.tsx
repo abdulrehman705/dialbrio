@@ -5,7 +5,7 @@ import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
 import { Reveal } from "@/components/marketing/motion";
 
-export const metadata: Metadata = { title: "Dialer", description: "Power and parallel dialing with answer-machine detection, voicemail drop, local presence and keyboard-first dispositions." };
+export const metadata: Metadata = { title: "Dialer", description: "Power and parallel dialing with answering-machine detection, local presence and keyboard-first dispositions." };
 
 const details = [
   ["Keyboard first", "Space calls or hangs up, M mutes, 1–9 records the outcome, ⌘↵ saves and loads the next lead."],

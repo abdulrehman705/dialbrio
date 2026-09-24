@@ -13,7 +13,7 @@ export interface Plan {
   /** Monthly price in cents; null = custom. */
   monthlyCents: number | null;
   includedSeats: number | null;
-  /** Competitor comparison shown next to seats (published pricing, Sept 2026). */
+  /** Optional short note after the seat count. */
   seatsNote?: string;
   highlights: string[];
   inheritsFrom?: PlanId;
@@ -50,12 +50,11 @@ export const PLANS: Plan[] = [
     audience: "Sales teams and in-house SDR pods of 2–10.",
     monthlyCents: 24700,
     includedSeats: 5,
-    seatsNote: "vs. 3 at HotProspector",
     inheritsFrom: "solo",
     highlights: [
       "Speed-to-lead auto-dial (<10s)",
       "AI coaching & objection tracking",
-      "Voicemail drop + SMS/email sequences",
+      "SMS/email sequences",
       "Team leaderboards & live call monitor",
       "Priority chat support",
     ],
@@ -68,7 +67,6 @@ export const PLANS: Plan[] = [
     audience: "Agencies running calling for multiple clients.",
     monthlyCents: 44700,
     includedSeats: 10,
-    seatsNote: "vs. 5 at HotProspector",
     inheritsFrom: "team",
     highlights: [
       "Unlimited client sub-accounts",
@@ -108,35 +106,48 @@ export interface UsageRate {
   /** Unit price in hundredths of a cent (so 1.5¢ = 150). */
   unitMilliCents: number;
   unit: string;
-  competitor: string;
-  savings?: string;
 }
 
 export const USAGE_RATES: UsageRate[] = [
-  { id: "outbound_min", label: "Outbound calls (US/CA)", rate: "1.5¢ / min", unitMilliCents: 150, unit: "min", competitor: "2¢ / min", savings: "−25%" },
-  { id: "inbound_min", label: "Inbound calls", rate: "1¢ / min", unitMilliCents: 100, unit: "min", competitor: "2¢ / min" },
-  { id: "sms_segment", label: "SMS segments", rate: "1.2¢ each", unitMilliCents: 120, unit: "segment", competitor: "n/a listed" },
-  { id: "local_number", label: "Local phone numbers", rate: "$2 / number / mo", unitMilliCents: 20000, unit: "number", competitor: "$3 / number / mo", savings: "−33%" },
-  { id: "extra_seat", label: "Extra agent seats", rate: "$59 / mo · 5-pack $225", unitMilliCents: 590000, unit: "seat", competitor: "$75 / mo · 5-pack $250" },
-  { id: "ai_min", label: "AI voice-agent minutes", rate: "9¢ / min after included", unitMilliCents: 900, unit: "min", competitor: "not published" },
+  { id: "outbound_min", label: "Outbound calls (US/CA)", rate: "1.5¢ / min", unitMilliCents: 150, unit: "min" },
+  { id: "inbound_min", label: "Inbound calls", rate: "1¢ / min", unitMilliCents: 100, unit: "min" },
+  { id: "sms_segment", label: "SMS segments", rate: "1.2¢ each", unitMilliCents: 120, unit: "segment" },
+  { id: "local_number", label: "Local phone numbers", rate: "$2 / number / mo", unitMilliCents: 20000, unit: "number" },
+  { id: "extra_seat", label: "Extra agent seats", rate: "$59 / mo · 5-pack $225", unitMilliCents: 590000, unit: "seat" },
+  { id: "ai_min", label: "AI voice-agent minutes", rate: "9¢ / min after included", unitMilliCents: 900, unit: "min" },
 ];
 
 export const SEAT_FIVE_PACK_CENTS = 22500;
 
 /** `first`/`second` are the two competitor columns; their labels live on the PriceBook. */
-export interface ComparisonRow { scenario: string; us: string; first: string; second: string; emphasis?: boolean }
+/** A competitor column: only figures the vendor publishes on its own pricing page. */
+export interface Competitor { name: string; sourceUrl: string }
+
+/** `values` is keyed by competitor name; missing means "Not published". */
+export interface ComparisonRow { scenario: string; us: string; values: Record<string, string> }
+
+export const COMPARISON_CHECKED_ON = "2026-09-25";
+
+export const COMPETITORS: Competitor[] = [
+  { name: "Aloware", sourceUrl: "https://aloware.com/pricing" },
+  { name: "Kixie", sourceUrl: "https://www.kixie.com/pricing" },
+  { name: "Five9", sourceUrl: "https://www.five9.com/pricing" },
+  { name: "Wavv", sourceUrl: "https://www.wavv.com/plans" },
+];
+
+const NP = "Not published";
 
 export const COMPARISON: ComparisonRow[] = [
-  { scenario: "Solo rep, 1 number, 3k min", us: "$146", first: "$200", second: "~$115 + $50 parallel add-on", emphasis: true },
-  { scenario: "5-rep team, 10 numbers, 20k min", us: "$567", first: "$797*", second: "$500+ before add-ons", emphasis: true },
-  { scenario: "Agency: 10 reps, 15 clients, 60k min", us: "$1,377", first: "$1,902*", second: "Not multi-tenant", emphasis: true },
-  { scenario: "Parallel dialing", us: "Included (4 lines)", first: "Included (3 lines)", second: "+$50/user/mo" },
-  { scenario: "White-label + sub-accounts", us: "Included on Agency", first: "Included on Agency", second: "Not offered" },
-  { scenario: "Free trial", us: "14 days, self-serve", first: "Demo call required", second: "7 days" },
+  { scenario: "Price with power dialing", us: "$97/mo for 1 seat · $247/mo for 5", values: { Aloware: "$70/user/mo (uPro)", Kixie: "Quote only", Five9: "$119/user/mo (Digital)", Wavv: NP } },
+  { scenario: "Minimum seats", us: "1", values: { Aloware: "5 on power-dialer plans", Kixie: NP, Five9: "50", Wavv: NP } },
+  { scenario: "Parallel dialing", us: "Included, up to 4 lines", values: { Aloware: NP, Kixie: "Up to 4 lines (Multi-Line plan)", Five9: "Predictive dialing included", Wavv: NP } },
+  { scenario: "Local phone numbers", us: "$2 / number / mo", values: { Aloware: "$4–6 / number / mo", Kixie: NP, Five9: NP, Wavv: NP } },
+  { scenario: "Free trial", us: "14 days", values: { Aloware: "7 days", Kixie: "7 days, no card", Five9: NP, Wavv: "7 days" } },
+  { scenario: "White-label + client sub-accounts", us: "Included on Agency", values: { Aloware: NP, Kixie: NP, Five9: NP, Wavv: NP } },
 ];
 
 export const COMPARISON_FOOTNOTE =
-  "*HotProspector: Business $297 needs +2 seats ($150) for a 5-rep team; Agency $497 needs +5 seats ($250); plus 2¢/min and $3/number. Competitor prices as published Sept 2026.";
+  "Competitor details are taken only from each vendor's public pricing page. \"Not published\" means the vendor doesn't list it publicly. Aloware includes agent calling minutes in its per-user price. Prices change; check each vendor's site before deciding.";
 
 export const PRICING_FAQ: { q: string; a: string }[] = [
   { q: "Are there setup fees or contracts?", a: "No. Every plan is month-to-month with no setup fee. Agency and Enterprise plans include free white-glove migration — we port your numbers, import your lists, and rebuild your workflows within 48 hours." },
@@ -179,7 +190,9 @@ export interface PriceBook {
   plans: Plan[];
   usageRates: UsageRate[];
   comparison: ComparisonRow[];
-  competitorLabels: { first: string; second: string };
+  competitors: Competitor[];
+  /** ISO date the competitor figures were last checked. */
+  comparisonCheckedOn: string;
   comparisonFootnote: string;
   faq: { q: string; a: string }[];
   trial: { days: number; freeMinutes: number; cardRequired: boolean };
@@ -193,7 +206,8 @@ export const DEFAULT_PRICE_BOOK: PriceBook = {
   plans: PLANS,
   usageRates: USAGE_RATES,
   comparison: COMPARISON,
-  competitorLabels: { first: "HotProspector", second: "Kixie (per-seat)" },
+  competitors: COMPETITORS,
+  comparisonCheckedOn: COMPARISON_CHECKED_ON,
   comparisonFootnote: COMPARISON_FOOTNOTE,
   faq: PRICING_FAQ,
   trial: { days: TRIAL.days, freeMinutes: TRIAL.freeMinutes, cardRequired: TRIAL.cardRequired },

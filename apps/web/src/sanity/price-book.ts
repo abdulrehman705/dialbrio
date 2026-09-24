@@ -54,8 +54,6 @@ function mapUsage(raw: Raw["usageRates"]): UsageRate[] {
           rate: r.displayRate,
           unitMilliCents: Math.round(r.unitPriceCents * 100),
           unit: r.unit ?? "",
-          competitor: r.competitorRate ?? "",
-          savings: r.savingsLabel ?? undefined,
         }]
       : [],
   );
@@ -74,8 +72,15 @@ export const getPriceBook = cache(async (): Promise<PriceBook> => {
     const d = DEFAULT_PRICE_BOOK;
     const plans = mapPlans(raw.plans ?? []);
     const usageRates = mapUsage(raw.usageRates ?? []);
+    const competitors = (raw.page?.competitors ?? []).flatMap((c) => (c?.name && c.sourceUrl ? [{ name: c.name, sourceUrl: c.sourceUrl }] : []));
     const comparison = (raw.comparison ?? []).flatMap((c) =>
-      c.scenario && c.ours ? [{ scenario: c.scenario, us: c.ours, first: c.firstCompetitor ?? "", second: c.secondCompetitor ?? "", emphasis: c.kind === "cost" }] : [],
+      c.scenario && c.ours
+        ? [{
+            scenario: c.scenario,
+            us: c.ours,
+            values: Object.fromEntries((c.competitorValues ?? []).flatMap((v) => (v?.competitor && v.value ? [[v.competitor, v.value]] : []))),
+          }]
+        : [],
     );
     const faq = (raw.page?.faq ?? []).flatMap((f) => (f?.question && f.answer ? [{ q: f.question, a: f.answer }] : []));
     const t = raw.page?.trial;
@@ -93,10 +98,8 @@ export const getPriceBook = cache(async (): Promise<PriceBook> => {
       usageRates: sections.usageRates ?? d.usageRates,
       comparison: sections.comparison ?? d.comparison,
       faq: sections.faq ?? d.faq,
-      competitorLabels: {
-        first: raw.page?.competitorLabels?.first || d.competitorLabels.first,
-        second: raw.page?.competitorLabels?.second || d.competitorLabels.second,
-      },
+      competitors: competitors.length ? competitors : d.competitors,
+      comparisonCheckedOn: raw.page?.comparisonCheckedOn || d.comparisonCheckedOn,
       comparisonFootnote: raw.page?.comparisonFootnote || d.comparisonFootnote,
       trial: {
         days: t?.days ?? d.trial.days,

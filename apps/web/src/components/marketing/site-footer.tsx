@@ -14,7 +14,7 @@ export function SiteFooter() {
         <div className="flex max-w-sm flex-col gap-4">
           <Logo markSize={26} />
           <p className="text-[14px] leading-6 text-fg-secondary">
-            The power dialer for sales teams and agencies that live in GoHighLevel or HubSpot. Every feature, honestly priced.
+            The power dialer for sales teams and agencies that live in GoHighLevel or HubSpot. Simple plans, honestly priced.
           </p>
           <p className="font-mono text-xs text-fg-muted">14-day trial · 500 free minutes · no card</p>
         </div>

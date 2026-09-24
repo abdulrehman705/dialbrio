@@ -5,19 +5,19 @@ import { getPriceBook } from "@/sanity/price-book";
 import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/marketing/home";
 import { PricingPlans } from "@/components/marketing/pricing-plans";
-import { Container, Section, SectionHeading, SpecChip } from "@/components/marketing/primitives";
+import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
+import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Solo $97, Team $247 with 5 seats, Agency $447 with 10 seats. Outbound calls 1.5¢/min, numbers $2/mo. Every feature on every plan.",
+  description: "Solo $97, Team $247 with 5 seats, Agency $447 with 10 seats. Outbound calls 1.5¢/min, numbers $2/mo.",
 };
 
 const th = "px-5 py-3 text-left font-mono text-[11.5px] font-medium tracking-[0.06em] text-fg-muted uppercase";
 
 export default async function PricingPage() {
   const pb = await getPriceBook();
-  const { first, second } = pb.competitorLabels;
   return (
     <>
       <PricingPlans priceBook={{ plans: pb.plans, annualDiscount: pb.annualDiscount }} />
@@ -31,25 +31,20 @@ export default async function PricingPage() {
             description="Every plan uses the same metered rates. No markups by tier, no minimum commitments. Usage is billed monthly in arrears, and you can set hard spend caps per workspace and per client."
           />
           <Reveal>
-          <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
-            <table className="w-full min-w-[640px] text-[14px]">
-              <caption className="sr-only">DialBrio usage rates compared with {first}</caption>
+          <div className="mt-10 overflow-hidden rounded-xl border border-border bg-surface">
+            <table className="w-full text-[14px]">
+              <caption className="sr-only">DialBrio usage rates, the same on every plan</caption>
               <thead className="border-b border-border">
                 <tr>
                   <th scope="col" className={th}>Item</th>
-                  <th scope="col" className={th}>DialBrio</th>
-                  <th scope="col" className={th}>{first}</th>
+                  <th scope="col" className={cn(th, "text-right")}>Rate</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {pb.usageRates.map((r) => (
                   <tr key={r.id}>
                     <th scope="row" className="px-5 py-4 text-left font-normal text-fg">{r.label}</th>
-                    <td className="px-5 py-4">
-                      <span className="font-mono font-semibold text-fg">{r.rate}</span>
-                      {r.savings && <SpecChip className="ml-2 py-0.5">{r.savings}</SpecChip>}
-                    </td>
-                    <td className="px-5 py-4 font-mono text-fg-muted">{r.competitor}</td>
+                    <td className="px-5 py-4 text-right font-mono font-semibold text-fg">{r.rate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -61,31 +56,49 @@ export default async function PricingPage() {
 
       <Section surface aria-labelledby="h2h-title">
         <Container>
-          <SectionHeading id="h2h-title" eyebrow="Head to head" title="The same stack, priced honestly" description="Monthly cost for three real team shapes, using each vendor's published pricing." />
+          <SectionHeading
+            id="h2h-title"
+            eyebrow="How we compare"
+            title="What each dialer publishes"
+            description="Figures come only from each vendor's own pricing page. Where a vendor doesn't publish something, the table says so."
+          />
           <Reveal>
           <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
-            <table className="w-full min-w-[760px] text-[14px]">
-              <caption className="sr-only">Monthly cost scenarios: DialBrio, {first} and {second}</caption>
+            <table className="w-full min-w-[860px] text-[14px]">
+              <caption className="sr-only">DialBrio compared with {pb.competitors.map((c) => c.name).join(", ")}, using published pricing</caption>
               <thead className="border-b border-border">
                 <tr>
-                  <th scope="col" className={th}>Monthly cost scenario</th>
-                  <th scope="col" className={th}>DialBrio</th>
-                  <th scope="col" className={th}>{first}</th>
-                  <th scope="col" className={th}>{second}</th>
+                  <th scope="col" className={th}>
+                    <span className="sr-only">Feature</span>
+                  </th>
+                  <th scope="col" className={cn(th, "text-fg")}>DialBrio</th>
+                  {pb.competitors.map((c) => (
+                    <th key={c.name} scope="col" className={th}>
+                      <a href={c.sourceUrl} target="_blank" rel="noreferrer" className="underline-offset-4 hover:text-fg hover:underline">
+                        {c.name}
+                        <span className="sr-only"> (opens pricing page)</span>
+                      </a>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {pb.comparison.map((row) => (
                   <tr key={row.scenario}>
                     <th scope="row" className="px-5 py-4 text-left font-medium text-fg">{row.scenario}</th>
-                    <td className={row.emphasis ? "px-5 py-4 font-display text-[18px] font-bold tracking-[-0.02em] text-brand-text" : "px-5 py-4 font-medium text-brand-text"}>{row.us}</td>
-                    <td className="px-5 py-4 text-fg-secondary">{row.first}</td>
-                    <td className="px-5 py-4 text-fg-secondary">{row.second}</td>
+                    <td className="px-5 py-4 font-semibold text-fg">{row.us}</td>
+                    {pb.competitors.map((c) => {
+                      const v = row.values[c.name] ?? "Not published";
+                      return (
+                        <td key={c.name} className={cn("px-5 py-4", v === "Not published" ? "text-fg-muted" : "text-fg-secondary")}>
+                          {v}
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p className="border-t border-border px-5 py-4 text-[12.5px] leading-5 text-fg-muted">{pb.comparisonFootnote}</p>
           </div>
           </Reveal>
 
@@ -126,7 +139,7 @@ export default async function PricingPage() {
 
       <FinalCta />
       <p className="bg-background px-4 pb-10 text-center text-xs text-fg-muted">
-        Pricing is the proposed launch price book, Sept 2026. Competitor rates from public pricing pages.
+        Pricing is the proposed launch price book, Sept 2026. Competitor details from each vendor's public pricing page.
       </p>
     </>
   );

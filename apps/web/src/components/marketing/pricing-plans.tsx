@@ -86,11 +86,11 @@ export function PricingPlans({ priceBook }: { priceBook: Pick<PriceBook, "plans"
           <Container>
             <Eyebrow>Pricing</Eyebrow>
             <h1 className="mt-4 max-w-[760px] font-display text-[42px] leading-[1.02] font-bold tracking-[-0.04em] md:text-[60px]">
-              Every feature. Every plan. About 30% less.
+              Simple plans. Honest pricing.
             </h1>
             <p className="mt-5 max-w-[640px] text-[17px] leading-[1.6] text-fg-secondary">
-              One flat platform fee, transparent usage rates and no per-feature upsells. Parallel dialing, AI coaching and white-label are
-              included from day one, not gated behind an “Agency” tier.
+              A flat fee per plan, transparent usage rates, and optional add-ons only when you need them. Parallel dialing is included on
+              every plan.
             </p>
             <div className="mt-8 flex items-center gap-3">
               <div role="radiogroup" aria-label="Billing interval" className="light inline-flex rounded-full border border-border bg-surface p-1">

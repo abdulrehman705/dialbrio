@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Grid3x3, Mic, PhoneOff, Voicemail } from "lucide-react";
+import { Grid3x3, Mic, PhoneOff } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
 import { StatusDot } from "@/components/ui/status-dot";
@@ -18,7 +18,7 @@ import { TypedLine } from "./motion";
 
 const lines = [
   { n: 1, who: "Rachel Donovan", detail: "Live answer · bridged to Maya", tone: "connected" as const },
-  { n: 2, who: "(720) 555-0122", detail: "Machine detected · voicemail dropped", tone: "neutral" as const },
+  { n: 2, who: "(720) 555-0122", detail: "Machine detected · skipped", tone: "neutral" as const },
   { n: 3, who: "(303) 555-0133", detail: "No answer · retry in 30 min", tone: "neutral" as const },
 ];
 
@@ -80,7 +80,7 @@ export function HeroProduct({ className }: { className?: string }) {
       <figure className="overflow-hidden rounded-xl border border-border-strong bg-background text-left shadow-lg">
         <div
           role="img"
-          aria-label="DialBrio dialer in 3-line parallel mode: one live answer bridged to the rep, one voicemail dropped automatically, one no-answer scheduled for retry, with live transcript and disposition shortcuts."
+          aria-label="DialBrio dialer in 3-line parallel mode: one live answer bridged to the rep, one answering machine skipped automatically, one no-answer scheduled for retry, with live transcript and disposition shortcuts."
         >
           <div inert className="select-none text-fg">
             {/* App chrome */}
@@ -213,12 +213,11 @@ export function HeroProduct({ className }: { className?: string }) {
                     <AudioLevel /> rec
                   </span>
                 </div>
-                <div className="grid grid-cols-4 gap-1.5 px-4 pb-4">
+                <div className="grid grid-cols-3 gap-1.5 px-4 pb-4">
                   {(
                     [
                       [Mic, "Mute"],
                       [Grid3x3, "Keypad"],
-                      [Voicemail, "VM drop"],
                     ] as const
                   ).map(([Icon, label]) => (
                     <span key={label} className="flex flex-col items-center gap-1 rounded-[7px] border border-border-strong bg-surface py-2 text-[10.5px] text-fg-secondary">

@@ -14,7 +14,6 @@ const heroStats: { prefix?: string; n?: number; suffix: string; label: string }[
   { n: 350, suffix: "+", label: "dials per rep, per day" },
   { prefix: "<", n: 10, suffix: "s", label: "lead-to-dial trigger time" },
   { n: 4, suffix: " lines", label: "parallel dialing, all plans" },
-  { suffix: "1 price", label: "per plan, no feature add-ons" },
 ];
 
 export async function Hero() {
@@ -46,7 +45,7 @@ export async function Hero() {
             </div>
             <p className="mt-4 font-mono text-xs text-fg-muted">{trialLine(trial)}</p>
 
-            <dl className="mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <dl className="mt-14 grid gap-3 sm:grid-cols-3">
               {heroStats.map((s) => (
                 <div key={s.label} className="rounded-xl border border-border bg-surface px-5 py-4">
                   <dt className="sr-only">{s.label}</dt>
@@ -77,14 +76,13 @@ const dialing: Feature[] = [
   { title: "Speed-to-lead triggers", body: "A form fill, ad lead or CRM stage change fires an instant dial to the assigned rep while the lead is still on the thank-you page.", spec: "trigger → ring in <10s" },
   { title: "Local presence & number health", body: "Calls show a local caller ID from a rotating, reputation-monitored pool. Numbers flagged as spam are quarantined and swapped automatically.", spec: "auto rotation + spam remediation" },
   { title: "Smart lead prioritization", body: "The queue reorders itself by recency, source, engagement and prior outcomes, and every lead shows why it is next.", spec: "explainable queue" },
-  { title: "Voicemail drop", body: "One click leaves a pre-recorded voicemail in the rep's own voice and jumps to the next call. No more repeating the same 25-second message 80 times a day.", spec: "saves ~1 hr/rep/day" },
-  { title: "Auto follow-up sequences", body: "No-answers flow into cadences of call, SMS and voicemail until the lead answers or the sequence completes.", spec: "5+ touches, automatic" },
+  { title: "Auto follow-up sequences", body: "No-answers flow into cadences of calls and SMS until the lead answers or the sequence completes.", spec: "5+ touches, automatic" },
 ];
 
 function LinesDiagram() {
   const rows = [
     { line: "L1", label: "Human answered", out: "bridged to rep in 0.8s", tone: "text-brand-text" },
-    { line: "L2", label: "Answering machine", out: "voicemail dropped", tone: "text-fg-secondary" },
+    { line: "L2", label: "Answering machine", out: "skipped, retry later", tone: "text-fg-secondary" },
     { line: "L3", label: "No answer", out: "retry in 30 min", tone: "text-fg-secondary" },
     { line: "L4", label: "Busy", out: "retry in 15 min", tone: "text-fg-secondary" },
   ];
@@ -114,15 +112,15 @@ export function DialingEngine() {
         <SectionHeading
           id="dialing-title"
           eyebrow="01 · Dialing engine"
-          title="Volume without the robocall feel"
-          description="The dialer connects reps only when a human answers, keeps caller IDs healthy, and gets to new leads before competitors finish their coffee."
+          title="Dial 1 line at a time, or 4 at once"
+          description="Take careful lists one call at a time, or run up to four lines for cold outreach. Either way your reps talk to real people, from healthy local numbers, and reach new leads first."
         />
         <div className="mt-12 grid items-center gap-8 lg:grid-cols-[1fr_440px] lg:gap-14">
           <Reveal>
             <h3 className="font-display text-[24px] leading-tight font-bold tracking-[-0.025em] text-fg">Power and parallel dialing</h3>
             <p className="mt-3 max-w-[520px] text-[16px] leading-[1.6] text-fg-secondary">
-              Dial one line for careful lists or up to four in parallel for cold outreach. Answer-machine detection drops voicemails
-              automatically and routes live answers to a rep in under a second. The rep only ever hears a person.
+              Dial one line for careful lists or up to four in parallel for cold outreach. Answering-machine detection skips voicemail
+              greetings and routes live answers to a rep in under a second. The rep only ever hears a person.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <SpecChip>4 lines · all plans</SpecChip>
@@ -443,10 +441,10 @@ export async function PricingBand() {
         <div>
           <Eyebrow>Pricing</Eyebrow>
           <h2 id="pricing-band-title" className="mt-3 font-display text-[30px] leading-tight font-bold tracking-[-0.035em] text-fg md:text-[38px]">
-            Every feature. Every plan. About 30% less.
+            Simple plans. Honest pricing.
           </h2>
           <p className="mt-3 max-w-[560px] text-[16px] leading-[1.6] text-fg-secondary">
-            One flat platform fee and transparent usage: 1.5¢ a minute outbound, $2 a number. Parallel dialing is never an add-on.
+            A flat fee per plan and transparent usage: 1.5¢ a minute outbound, $2 a number. Parallel dialing is included on every plan.
           </p>
         </div>
         <div className="flex flex-wrap items-end gap-x-10 gap-y-6">

@@ -5,7 +5,8 @@ export const PRICE_BOOK_QUERY = defineQuery(`{
   "page": *[_id == "pricingPage"][0]{
     annualDiscountPercent,
     trial{ days, freeMinutes, cardRequired },
-    competitorLabels{ first, second },
+    competitors[]{ name, sourceUrl },
+    comparisonCheckedOn,
     comparisonFootnote,
     "faq": faqs[]->{ question, answer }
   },
@@ -16,10 +17,10 @@ export const PRICE_BOOK_QUERY = defineQuery(`{
     cta, badge
   },
   "usageRates": *[_type == "usageRate" && defined(itemKey)] | order(sortOrder asc){
-    itemKey, label, unitPriceCents, unit, displayRate, competitorRate, savingsLabel
+    itemKey, label, unitPriceCents, unit, displayRate
   },
   "comparison": *[_type == "comparisonRow"] | order(sortOrder asc){
-    scenario, ours, firstCompetitor, secondCompetitor, kind
+    scenario, ours, competitorValues[]{ competitor, value }
   }
 }`);
 
