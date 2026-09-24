@@ -3,6 +3,7 @@ import { DialingEngine, FinalCta } from "@/components/marketing/home";
 import { HeroProduct } from "@/components/marketing/hero-product";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "Dialer", description: "Power and parallel dialing with answer-machine detection, voicemail drop, local presence and keyboard-first dispositions." };
 
@@ -32,6 +33,7 @@ export default function DialerPage() {
       <Section surface aria-labelledby="dialer-details">
         <Container>
           <SectionHeading id="dialer-details" eyebrow="Details" title="Small things that add up over 300 calls" />
+          <Reveal>
           <dl className="mt-10 grid gap-x-12 border-t border-border md:grid-cols-2">
             {details.map(([t, d]) => (
               <div key={t} className="border-b border-border py-5">
@@ -40,6 +42,7 @@ export default function DialerPage() {
               </div>
             ))}
           </dl>
+          </Reveal>
         </Container>
       </Section>
       <FinalCta />

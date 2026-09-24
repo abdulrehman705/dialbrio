@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Compliance, FinalCta } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "Security & compliance", description: "How DialBrio isolates tenants, protects credentials and keeps an audit trail of consent, dials and opt-outs." };
 
@@ -25,6 +26,7 @@ export default function SecurityPage() {
       <Section aria-labelledby="controls-title">
         <Container className="grid gap-10 lg:grid-cols-[340px_1fr] lg:gap-16">
           <SectionHeading id="controls-title" eyebrow="Controls" title="What protects your data" />
+          <Reveal delay={0.1}>
           <dl className="grid gap-x-10 border-t border-border sm:grid-cols-2">
             {controls.map(([t, d]) => (
               <div key={t} className="border-b border-border py-5">
@@ -33,6 +35,7 @@ export default function SecurityPage() {
               </div>
             ))}
           </dl>
+          </Reveal>
         </Container>
       </Section>
       <div id="compliance">

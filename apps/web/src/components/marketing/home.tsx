@@ -3,17 +3,18 @@ import { ArrowRight, Check } from "lucide-react";
 import { PLANS, TRIAL, formatPlanPrice } from "@dialbrio/types";
 import { Button } from "@/components/ui/button";
 import { HeroProduct } from "./hero-product";
+import { CountNumber, Marquee, Reveal, RevealHeading, RevealStatement } from "./motion";
 import { Container, Eyebrow, FeatureCard, FeatureGrid, InkPanel, Section, SectionHeading, SpecChip, type Feature } from "./primitives";
 
 export const TRIAL_LINE = `${TRIAL.days}-day free trial · ${TRIAL.freeMinutes} free minutes · no credit card`;
 
 /* ── Hero ─────────────────────────────────────────────────────────────── */
 
-const heroStats = [
-  { value: "350+", label: "dials per rep, per day" },
-  { value: "<10s", label: "lead-to-dial trigger time" },
-  { value: "4 lines", label: "parallel dialing, all plans" },
-  { value: "1 price", label: "per plan, no feature add-ons" },
+const heroStats: { prefix?: string; n?: number; suffix: string; label: string }[] = [
+  { n: 350, suffix: "+", label: "dials per rep, per day" },
+  { prefix: "<", n: 10, suffix: "s", label: "lead-to-dial trigger time" },
+  { n: 4, suffix: " lines", label: "parallel dialing, all plans" },
+  { suffix: "1 price", label: "per plan, no feature add-ons" },
 ];
 
 export function Hero() {
@@ -23,9 +24,10 @@ export function Hero() {
         <InkPanel as="div" className="mx-auto max-w-[1400px] pt-16 pb-40 sm:pt-20 md:pb-52">
           <Container>
             <Eyebrow>DialBrio · power dialer</Eyebrow>
-            <h1 className="mt-5 max-w-[880px] text-balance font-display text-[44px] leading-[1.02] font-bold tracking-[-0.04em] sm:text-[58px] lg:text-[72px]">
-              Built to keep reps talking, not waiting for ringtones.
-            </h1>
+            <RevealHeading
+              text="Built to keep reps talking, not waiting for ringtones."
+              className="mt-5 max-w-[880px] text-balance font-display text-[44px] leading-[1.02] font-bold tracking-[-0.04em] sm:text-[58px] lg:text-[72px]"
+            />
             <p className="mt-6 max-w-[620px] text-[17px] leading-[1.6] text-fg-secondary md:text-[18px]">
               Parallel dialing, sub-10-second speed-to-lead and native GoHighLevel sync, for sales teams and the agencies that run
               calling for their clients. Compliance is enforced by the system, not by memory.
@@ -47,7 +49,11 @@ export function Hero() {
                 <div key={s.label} className="rounded-xl border border-border px-5 py-4">
                   <dt className="sr-only">{s.label}</dt>
                   <dd>
-                    <span className="block font-display text-[28px] leading-8 font-bold tracking-[-0.03em] text-brand-text">{s.value}</span>
+                    <span className="block font-display text-[28px] leading-8 font-bold tracking-[-0.03em] text-brand-text">
+                      {s.prefix}
+                      {s.n !== undefined && <CountNumber value={s.n} />}
+                      {s.suffix}
+                    </span>
                     <span className="mt-1 block text-[13px] text-fg-secondary">{s.label}</span>
                   </dd>
                 </div>
@@ -110,7 +116,7 @@ export function DialingEngine() {
           description="The dialer connects reps only when a human answers, keeps caller IDs healthy, and gets to new leads before competitors finish their coffee."
         />
         <div className="mt-12 grid items-center gap-8 lg:grid-cols-[1fr_440px] lg:gap-14">
-          <div>
+          <Reveal>
             <h3 className="font-display text-[24px] leading-tight font-bold tracking-[-0.025em] text-fg">Power and parallel dialing</h3>
             <p className="mt-3 max-w-[520px] text-[16px] leading-[1.6] text-fg-secondary">
               Dial one line for careful lists or up to four in parallel for cold outreach. Answer-machine detection drops voicemails
@@ -120,16 +126,18 @@ export function DialingEngine() {
               <SpecChip>4 lines · all plans</SpecChip>
               <SpecChip>AMD &lt; 1s</SpecChip>
             </div>
-          </div>
-          <LinesDiagram />
+          </Reveal>
+          <Reveal delay={0.1}>
+            <LinesDiagram />
+          </Reveal>
         </div>
         <div className="mt-14 grid gap-x-12 border-t border-border md:grid-cols-2">
-          {dialing.map((f) => (
-            <div key={f.title} className="flex flex-col gap-2 border-b border-border py-6">
+          {dialing.map((f, i) => (
+            <Reveal key={f.title} delay={(i % 2) * 0.08} className="flex flex-col gap-2 border-b border-border py-6">
               <h3 className="text-[16px] font-semibold text-fg">{f.title}</h3>
               <p className="text-[14.5px] leading-[1.6] text-fg-secondary">{f.body}</p>
               {f.spec && <SpecChip className="mt-1">{f.spec}</SpecChip>}
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>
@@ -192,20 +200,27 @@ const syncLog: [string, string, string, string][] = [
   ["14:06:42", "tag", "booked-consult", "→ GHL 0.7s"],
 ];
 
+function IntegrationChip({ name, native }: { name: string; native?: boolean }) {
+  return (
+    <span
+      className={
+        native
+          ? "inline-block whitespace-nowrap rounded-full border border-brand px-3.5 py-1.5 text-[13.5px] leading-5 font-medium text-brand-text"
+          : "inline-block whitespace-nowrap rounded-full border border-border-strong bg-surface px-3.5 py-1.5 text-[13.5px] leading-5 text-fg"
+      }
+    >
+      {name}
+      {native && <span className="text-fg-muted"> · native</span>}
+    </span>
+  );
+}
+
 export function IntegrationChips({ className }: { className?: string }) {
   return (
     <ul className={`flex flex-wrap gap-2 ${className ?? ""}`}>
       {integrations.map((i) => (
-        <li
-          key={i.name}
-          className={
-            i.native
-              ? "rounded-full border border-brand px-3.5 py-1.5 text-[13.5px] font-medium text-brand-text"
-              : "rounded-full border border-border-strong bg-surface px-3.5 py-1.5 text-[13.5px] text-fg"
-          }
-        >
-          {i.name}
-          {i.native && <span className="text-fg-muted"> · native</span>}
+        <li key={i.name}>
+          <IntegrationChip {...i} />
         </li>
       ))}
     </ul>
@@ -224,6 +239,7 @@ export function CrmWorkflow() {
               title="Native sync, no Zapier tax"
               description="Contacts, dispositions, recordings and appointments write back to your CRM in real time, both directions, with no middleware to babysit."
             />
+            <Reveal>
             <dl className="mt-10 divide-y divide-border border-y border-border">
               {[
                 ["Two-way CRM sync", "Stage changes in the CRM update the dial queue; dispositions in DialBrio update the CRM.", "<5s sync latency"],
@@ -239,8 +255,10 @@ export function CrmWorkflow() {
                 </div>
               ))}
             </dl>
+            </Reveal>
           </div>
-          <div className="flex flex-col gap-6 lg:pt-16">
+          <div className="flex min-w-0 flex-col gap-6 lg:pt-16">
+            <Reveal delay={0.1}>
             <figure className="dark overflow-hidden rounded-xl bg-background text-fg shadow-lg">
               <figcaption className="flex items-center justify-between border-b border-border px-4 py-3 text-[13px]">
                 <span className="font-medium">Sync log · Summit Solar</span>
@@ -257,9 +275,14 @@ export function CrmWorkflow() {
                 ))}
               </ol>
             </figure>
+            </Reveal>
             <div>
               <p className="mb-3 text-[13px] text-fg-muted">Connects to</p>
-              <IntegrationChips />
+              <Marquee
+                label="Integrations"
+                fallback={<IntegrationChips />}
+                items={integrations.map((i) => ({ key: i.name, label: i.native ? `${i.name}, native` : i.name, node: <IntegrationChip {...i} /> }))}
+              />
               <p className="mt-3 text-[12.5px] text-fg-muted">GoHighLevel ships first. HubSpot and Salesforce adapters are next on the roadmap.</p>
             </div>
           </div>
@@ -291,23 +314,24 @@ export function Compliance() {
                 id="compliance-title"
                 eyebrow="04 · Compliance"
                 title="Enforced by the system, not the honor system"
-                description="Included on every plan, because a TCPA suit costs more than any dialer subscription."
               />
+              <RevealStatement text="Included on every plan, because a TCPA suit costs more than any dialer subscription." className="mt-6 max-w-[680px]" />
               <div className="mt-10 grid gap-8 md:grid-cols-3">
                 {[
                   ["DNC & consent", "Federal, state and internal do-not-call lists are checked before every dial. Contacts without valid consent can't be queued.", "blocked at dial time"],
                   ["Calling-hours guardrails", "Time-zone-aware windows apply federal and stricter state rules, so reps never have to remember which state stops at 8 p.m.", "per-state rules"],
                   ["Audit trail & retention", "Immutable logs of consent source, dial attempts, recordings and opt-outs. Exportable when your lawyer asks.", "export-ready logs"],
-                ].map(([t, d, s]) => (
-                  <div key={t} className="flex flex-col gap-2 border-t border-border pt-4">
+                ].map(([t, d, s], i) => (
+                  <Reveal key={t} delay={i * 0.08} className="flex flex-col gap-2 border-t border-border pt-4">
                     <h3 className="text-[16px] font-semibold text-fg">{t}</h3>
                     <p className="text-[14px] leading-[1.6] text-fg-secondary">{d}</p>
                     <SpecChip className="mt-1">{s}</SpecChip>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
-            <figure className="self-start rounded-xl border border-border bg-surface p-5" aria-label="Example dial-time compliance check, all checks passed.">
+            <Reveal delay={0.1} className="self-start">
+            <figure className="rounded-xl border border-border bg-surface p-5" aria-label="Example dial-time compliance check, all checks passed.">
               <figcaption className="flex items-baseline justify-between gap-3 border-b border-border pb-3">
                 <span className="text-[14px] font-medium text-fg">Before dialing (512) 555-0136</span>
                 <span className="font-mono text-xs text-fg-muted">38 ms</span>
@@ -324,6 +348,7 @@ export function Compliance() {
               </ul>
               <p className="mt-3 rounded-lg bg-brand-soft px-3 py-2 text-[13px] font-medium text-brand-text">Cleared to dial</p>
             </figure>
+            </Reveal>
           </div>
         </Container>
       </InkPanel>
@@ -352,15 +377,16 @@ export function Agencies() {
               title="Run every client from one pane of glass"
               description="Multi-tenant from the ground up: your brand on the portal, your margin on the minutes, your dashboard across every client."
             />
-            <div className="mt-10 flex flex-col gap-4">
+            <Reveal className="mt-10 flex flex-col gap-4">
               <FeatureCard f={{ title: "Unlimited sub-accounts", body: "Isolated workspaces per client, with separate numbers, lists, agents and reporting, managed from one agency dashboard.", spec: "no per-client fee" }} />
               <div className="grid gap-4 sm:grid-cols-2">
                 <FeatureCard f={{ title: "White-label portal", body: "Your logo, colors and domain. Clients log into your calling platform and never see the DialBrio name.", spec: "included, not an add-on" }} />
                 <FeatureCard f={{ title: "Client billing & margins", body: "Set your own client prices on seats and minutes. Usage is metered per sub-account and invoiced. You keep the spread.", spec: "built-in rebilling" }} />
               </div>
-            </div>
+            </Reveal>
           </div>
-          <figure className="overflow-hidden rounded-xl border border-border bg-surface shadow-md lg:mt-16" aria-label="Example agency view: minutes, cost and rebilled amount per client this month.">
+          <Reveal delay={0.1} className="lg:mt-16">
+          <figure className="overflow-hidden rounded-xl border border-border bg-surface shadow-md" aria-label="Example agency view: minutes, cost and rebilled amount per client this month.">
             <figcaption className="flex items-baseline justify-between border-b border-border px-5 py-4">
               <span className="font-display text-[17px] font-bold tracking-[-0.02em] text-fg">Clients · September</span>
               <span className="font-mono text-xs text-fg-muted">month to date</span>
@@ -396,6 +422,7 @@ export function Agencies() {
               </table>
             </div>
           </figure>
+          </Reveal>
         </div>
       </Container>
     </Section>
@@ -408,6 +435,7 @@ export function PricingBand() {
   const plans = PLANS.filter((p) => p.monthlyCents !== null);
   return (
     <Section surface aria-labelledby="pricing-band-title" className="py-16 md:py-20">
+      <Reveal>
       <Container className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
           <Eyebrow>Pricing</Eyebrow>
@@ -435,6 +463,7 @@ export function PricingBand() {
           </Button>
         </div>
       </Container>
+      </Reveal>
     </Section>
   );
 }
@@ -443,6 +472,7 @@ export function FinalCta() {
   return (
     <section aria-labelledby="final-cta-title" className="bg-background px-3 pt-4 pb-16 sm:px-4 md:pb-24">
       <Container>
+        <Reveal>
         <InkPanel className="flex flex-col gap-8 px-6 py-12 sm:px-12 md:flex-row md:items-center md:justify-between md:py-14">
           <div>
             <h2 id="final-cta-title" className="font-display text-[32px] leading-tight font-bold tracking-[-0.035em] md:text-[40px]">
@@ -458,6 +488,7 @@ export function FinalCta() {
             </Link>
           </Button>
         </InkPanel>
+        </Reveal>
       </Container>
     </section>
   );

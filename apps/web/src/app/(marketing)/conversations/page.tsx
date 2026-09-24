@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FinalCta } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, ProductFrame, Section, SectionHeading, SpecChip } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "Conversations", description: "SMS and call history in one inbox, next to the dialer, with delivery state and the number used on every message." };
 
@@ -24,6 +25,7 @@ export default function ConversationsPage() {
         <Container className="grid gap-12 lg:grid-cols-[1fr_460px] lg:items-center lg:gap-16">
           <div>
             <SectionHeading id="conv-title" eyebrow="Inbox" title="Nothing slips between a missed call and a text back" />
+            <Reveal>
             <dl className="mt-10 divide-y divide-border border-y border-border">
               {[
                 ["Filters that match the job", "Unread, mine, unassigned and team views. Search by name, number or message."],
@@ -37,7 +39,9 @@ export default function ConversationsPage() {
                 </div>
               ))}
             </dl>
+            </Reveal>
           </div>
+          <Reveal delay={0.1}>
           <ProductFrame label="An SMS thread with Rachel Donovan: she asks about next steps and books a Saturday consult.">
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
               <div>
@@ -58,6 +62,7 @@ export default function ConversationsPage() {
               ))}
             </ol>
           </ProductFrame>
+          </Reveal>
         </Container>
       </Section>
       <FinalCta />

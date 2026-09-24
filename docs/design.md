@@ -245,6 +245,30 @@ Sanctioned animations:
 
 Forbidden: animated gradient backgrounds, floating objects, parallax, 3D rotation, continuous glow.
 
+### React Bits
+
+Selected components from [React Bits](https://reactbits.dev) are vendored in
+`apps/web/src/components/reactbits/` (MIT + Commons Clause; notice in that folder), adapted to theme tokens.
+Motion libraries: `motion` for app state, `gsap` + `@gsap/react` for the React Bits text/scroll effects.
+
+| Component | Sanctioned use | Surface |
+| --- | --- | --- |
+| SplitText | Hero headline, word-by-word rise on load | Marketing |
+| CountUp | Stat row on scroll-in; KPI strip and billing total on first mount only | Marketing, app |
+| AnimatedContent | Section/block entrance, once | Marketing |
+| ScrollReveal | One editorial statement per page at most | Marketing |
+| LogoLoop | Integration name strip (text, no official logos) | Marketing |
+| TextType | Newest line of the hero product transcript, types once | Marketing |
+| Counter | Rolling digits when a session stat increments | Dialer |
+| HoldButton | Hold-to-confirm for irreversible actions (DNC) | Dialer |
+| StatusMark | Pending → running → done/failed glyph (CRM sync, integration checks) | App |
+
+Rules: GSAP components don't honour `prefers-reduced-motion`, so every usage goes through a wrapper that renders
+the final static state when `useReducedMotion()` is true. Numbers never re-animate on refetch. Content is in the DOM
+and visible without animation. **Not allowed** from React Bits: background effects (Aurora, Particles, Silk,
+Beams, Galaxy…), cursor effects, glitch/shiny/gradient text, glass/glow cards, and anything using a second icon
+family (several React Bits components ship Hugeicons; Lucide is our only icon set).
+
 ## 11. Responsive breakpoints
 
 | Name | Min width | Behaviour |

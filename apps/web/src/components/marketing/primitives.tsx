@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "./motion";
 
 /** Marketing container: wider rhythm than the app, 16px minimum gutters. */
 export function Container({ className, children }: { className?: string; children: React.ReactNode }) {
@@ -50,13 +51,13 @@ interface SectionHeadingProps {
 
 export function SectionHeading({ eyebrow, title, description, id, className, as: H = "h2" }: SectionHeadingProps) {
   return (
-    <div className={cn("max-w-[720px]", className)}>
+    <Reveal className={cn("max-w-[720px]", className)}>
       {eyebrow && <Eyebrow className="mb-3">{eyebrow}</Eyebrow>}
       <H id={id} className="text-balance font-display text-[30px] leading-[1.08] font-bold tracking-[-0.035em] text-fg md:text-[38px]">
         {title}
       </H>
       {description && <p className="mt-3 max-w-[640px] text-[16.5px] leading-[1.6] text-fg-secondary">{description}</p>}
-    </div>
+    </Reveal>
   );
 }
 
@@ -114,8 +115,11 @@ export function FeatureCard({ f, className }: { f: Feature; className?: string }
 export function FeatureGrid({ items, className }: { items: Feature[]; className?: string }) {
   return (
     <div className={cn("grid gap-4 md:grid-cols-2", className)}>
-      {items.map((f) => (
-        <FeatureCard key={f.title} f={f} />
+      {items.map((f, i) => (
+        // Small stagger across a row; each card still waits until it scrolls into view.
+        <Reveal key={f.title} delay={(i % 3) * 0.07} className="flex">
+          <FeatureCard f={f} className="w-full" />
+        </Reveal>
       ))}
     </div>
   );

@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { Ban, Check } from "lucide-react";
 import { addDays, addHours, format, setHours, setMinutes } from "date-fns";
 import { DISPOSITION_CODES, type DispositionCode } from "@dialbrio/types";
 import { Input } from "@/components/ui/input";
-import { Checkbox, RadioGroup, RadioItem } from "@/components/ui/switch";
+import { RadioGroup, RadioItem } from "@/components/ui/switch";
+import HoldButton from "@/components/reactbits/HoldButton";
 import { cn } from "@/lib/utils";
 import { DISPOSITION_META } from "./status-config";
 
@@ -25,6 +27,13 @@ interface DispositionPickerProps {
   slotsNote?: React.ReactNode;
   dncConfirmed: boolean;
   onDncConfirmedChange: (v: boolean) => void;
+  /**
+   * Fired after the agent completes the hold-to-confirm gesture (DNC is irreversible, so a tap is
+   * not enough). The host saves the disposition. Only enabled once the call has ended.
+   */
+  onDncCommit?: () => void;
+  /** True when a DNC hold can be committed (call ended, not saving). */
+  dncCommitReady?: boolean;
   /** Contact phone, shown in the DNC confirmation. */
   phoneLabel?: string;
   disabled?: boolean;
@@ -55,6 +64,8 @@ export function DispositionPicker({
   slotsNote,
   dncConfirmed,
   onDncConfirmedChange,
+  onDncCommit,
+  dncCommitReady = true,
   phoneLabel,
   disabled,
   className,
@@ -160,12 +171,15 @@ export function DispositionPicker({
             <p className="text-xs leading-5 text-fg-secondary">
               This number will never be dialed or texted again by any campaign in this organization. Removal requires an admin and is audited.
             </p>
-            <label className="flex cursor-pointer items-start gap-2 text-[13px] text-fg">
-              <Checkbox checked={dncConfirmed} onCheckedChange={(v) => onDncConfirmedChange(v === true)} className="mt-0.5" />
-              <span>
-                The contact asked not to be called{phoneLabel ? <> — add <span className="font-mono">{phoneLabel}</span> to DNC</> : null}
-              </span>
-            </label>
+            <DncHold
+              ready={dncCommitReady && !disabled}
+              confirmed={dncConfirmed}
+              phoneLabel={phoneLabel}
+              onHold={() => {
+                onDncConfirmedChange(true);
+                onDncCommit?.();
+              }}
+            />
           </Expand>
         )}
       </AnimatePresence>
@@ -184,5 +198,42 @@ function Expand({ children, danger }: { children: React.ReactNode; danger?: bool
     >
       <div className={cn("flex flex-col gap-2.5 rounded-lg p-3", danger ? "bg-danger-soft" : "bg-surface-sunken")}>{children}</div>
     </motion.div>
+  );
+}
+
+/**
+ * Hold-to-confirm for Do Not Call (React Bits HoldButton). Focused as soon as DNC is chosen, so the
+ * keyboard path is: 9, then hold Space or Enter. Releasing early cancels; Escape cancels.
+ */
+function DncHold({ ready, confirmed, phoneLabel, onHold }: { ready: boolean; confirmed: boolean; phoneLabel?: string; onHold: () => void }) {
+  const wrapRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (ready) wrapRef.current?.querySelector("button")?.focus({ preventScroll: true });
+  }, [ready]);
+  return (
+    <div ref={wrapRef} className="flex flex-col gap-1.5">
+      <HoldButton
+        className="w-full"
+        size="md"
+        holdTime={1200}
+        resetAfter={0}
+        disabled={!ready || confirmed}
+        icon={<Ban className="size-4" aria-hidden />}
+        doneIcon={<Check className="size-4" aria-hidden />}
+        doneLabel="Added to DNC"
+        onHold={onHold}
+      >
+        Hold to add to Do Not Call
+      </HoldButton>
+      <p className="text-xs text-fg-muted">
+        {ready ? (
+          <>
+            Hold for about a second{phoneLabel ? <> to block <span className="font-mono">{phoneLabel}</span></> : null}. Keyboard: hold Space or Enter. Esc cancels.
+          </>
+        ) : (
+          "End the call first, then hold to confirm."
+        )}
+      </p>
+    </div>
   );
 }

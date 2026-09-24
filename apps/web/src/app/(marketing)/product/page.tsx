@@ -5,6 +5,7 @@ import { Compliance, CrmWorkflow, FinalCta } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
 import { LEAD_STATES } from "@dialbrio/types";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "Product", description: "How DialBrio moves a lead from form fill to booked appointment, and syncs every step back to your CRM." };
 
@@ -29,6 +30,7 @@ export default function ProductPage() {
       <Section aria-labelledby="steps-title">
         <Container>
           <SectionHeading id="steps-title" eyebrow="How a lead moves" title="Six steps, one screen for the rep" />
+          <Reveal>
           <ol className="mt-12 grid gap-x-10 border-t border-border md:grid-cols-2 lg:grid-cols-3">
             {steps.map(([t, d], i) => (
               <li key={t} className="flex gap-4 border-b border-border py-6">
@@ -40,6 +42,7 @@ export default function ProductPage() {
               </li>
             ))}
           </ol>
+          </Reveal>
         </Container>
       </Section>
 
@@ -51,6 +54,7 @@ export default function ProductPage() {
             title="Fresh, Warm, Aged, Zombie"
             description="Lifecycle is a first-class state in DialBrio, not a CRM tag somebody forgot to update. Queues select leads by state, and every change is recorded with a reason."
           />
+          <Reveal delay={0.1}>
           <dl className="divide-y divide-border border-y border-border">
             {LEAD_STATES.map((s) => (
               <div key={s} className="grid gap-2 py-5 sm:grid-cols-[120px_1fr] sm:items-baseline">
@@ -61,6 +65,7 @@ export default function ProductPage() {
               </div>
             ))}
           </dl>
+          </Reveal>
         </Container>
       </Section>
 

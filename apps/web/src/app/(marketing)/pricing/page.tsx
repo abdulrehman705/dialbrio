@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/marketing/home";
 import { PricingPlans } from "@/components/marketing/pricing-plans";
 import { Container, Section, SectionHeading, SpecChip } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -27,6 +28,7 @@ export default function PricingPage() {
             title="Telecom at cost-plus, not cost-plus-plus"
             description="Every plan uses the same metered rates. No markups by tier, no minimum commitments. Usage is billed monthly in arrears, and you can set hard spend caps per workspace and per client."
           />
+          <Reveal>
           <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full min-w-[640px] text-[14px]">
               <caption className="sr-only">DialBrio usage rates compared with HotProspector</caption>
@@ -51,12 +53,14 @@ export default function PricingPage() {
               </tbody>
             </table>
           </div>
+          </Reveal>
         </Container>
       </Section>
 
       <Section surface aria-labelledby="h2h-title">
         <Container>
           <SectionHeading id="h2h-title" eyebrow="Head to head" title="The same stack, priced honestly" description="Monthly cost for three real team shapes, using each vendor's published pricing." />
+          <Reveal>
           <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full min-w-[760px] text-[14px]">
               <caption className="sr-only">Monthly cost scenarios: DialBrio, HotProspector and Kixie</caption>
@@ -81,7 +85,9 @@ export default function PricingPage() {
             </table>
             <p className="border-t border-border px-5 py-4 text-[12.5px] leading-5 text-fg-muted">{COMPARISON_FOOTNOTE}</p>
           </div>
+          </Reveal>
 
+          <Reveal>
           <div className="mt-12 flex flex-col gap-5 rounded-xl border border-warning bg-warning-soft p-6 sm:p-8 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="font-display text-[24px] leading-tight font-bold tracking-[-0.025em] text-fg">
@@ -95,13 +101,14 @@ export default function PricingPage() {
               <Link href="/get-started">Start free trial</Link>
             </Button>
           </div>
+          </Reveal>
         </Container>
       </Section>
 
       <Section aria-labelledby="faq-title">
         <Container className="grid gap-10 lg:grid-cols-[340px_1fr] lg:gap-16">
           <SectionHeading id="faq-title" eyebrow="FAQ" title="Pricing questions, answered" />
-          <div className="flex flex-col gap-3">
+          <Reveal delay={0.08} className="flex flex-col gap-3">
             {PRICING_FAQ.map((f) => (
               <details key={f.q} className="group rounded-xl border border-border bg-surface open:shadow-sm">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-[15.5px] font-semibold text-fg [&::-webkit-details-marker]:hidden">
@@ -111,7 +118,7 @@ export default function PricingPage() {
                 <p className="px-5 pb-5 text-[15px] leading-[1.65] text-fg-secondary">{f.a}</p>
               </details>
             ))}
-          </div>
+          </Reveal>
         </Container>
       </Section>
 

@@ -16,6 +16,7 @@ import { cn, formatNumber } from "@/lib/utils";
 import { money, moneyWhole, periodInfo } from "./format";
 import { PlanDialog } from "./plan-dialog";
 import { PlannedMarker } from "@/components/app/planned-marker";
+import { CountOnce } from "@/components/charts/kpi-strip";
 
 const stripeLater = (what: string) =>
   toast(`${what} opens the Stripe billing portal`, { description: "The portal connects in Phase 7. Nothing was changed." });
@@ -36,7 +37,9 @@ function InvoiceLedger({ b }: { b: BillingOverview }) {
       <div className="flex flex-wrap items-end justify-between gap-4 px-5 pt-5">
         <div>
           <p className="text-[13px] font-medium text-fg-secondary">Estimated invoice so far</p>
-          <p className="mt-1 font-display text-[40px] leading-none font-bold tracking-[-0.035em] text-fg">{money(b.estimatedTotalCents)}</p>
+          <p className="mt-1 font-display text-[40px] leading-none font-bold tracking-[-0.035em] text-fg">
+            <CountOnce id="billing:estimated-total" text={money(b.estimatedTotalCents)} />
+          </p>
         </div>
         <div className="min-w-48 flex-1 sm:max-w-64">
           <div className="flex justify-between text-xs text-fg-muted">

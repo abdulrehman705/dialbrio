@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState, ErrorState } from "@/components/states";
 import { useContacts, useMe, usePhoneNumbers } from "@/lib/queries";
 import { cn, formatDateTime, formatPhone, timeAgo } from "@/lib/utils";
+import StatusMark, { type StatusMarkStatus } from "@/components/reactbits/StatusMark";
 import { CHECK_META, PROVIDER_META } from "./provider-meta";
 
 function Section({ title, description, children, className }: { title: string; description?: string; children: React.ReactNode; className?: string }) {
@@ -42,18 +43,36 @@ const phase1Notice = (name: string) =>
     description: "Credentials are exchanged and stored encrypted on the server — they are never sent to or shown in the browser.",
   });
 
-function HealthChecks({ integration }: { integration: Integration }) {
+/** Check result → StatusMark glyph (React Bits). Text label is always shown next to it. */
+const CHECK_MARK: Record<Integration["checks"][number]["status"], { status: StatusMarkStatus; errorColor?: string }> = {
+  ok: { status: "done" },
+  warning: { status: "failed", errorColor: "var(--warning)" },
+  error: { status: "failed", errorColor: "var(--danger)" },
+  unknown: { status: "pending" },
+};
+
+function HealthChecks({ integration, rerunning }: { integration: Integration; rerunning?: boolean }) {
   return (
-    <ul className="flex flex-col divide-y divide-border rounded-lg border border-border">
+    <ul className="flex flex-col divide-y divide-border rounded-lg border border-border" aria-busy={rerunning || undefined}>
       {integration.checks.map((c) => {
         const m = CHECK_META[c.status];
+        const mark = CHECK_MARK[c.status];
         return (
           <li key={c.label} className="flex items-start gap-3 px-3 py-2.5">
-            <m.icon className={cn("mt-0.5 size-4 shrink-0", m.className)} aria-hidden />
+            <span aria-hidden className="mt-0.5 inline-flex shrink-0">
+              <StatusMark
+                status={rerunning ? "running" : mark.status}
+                size={16}
+                color="var(--fg-muted)"
+                doneColor="var(--success)"
+                errorColor={mark.errorColor}
+                strike={false}
+              />
+            </span>
             <div className="min-w-0 flex-1">
               <p className="flex flex-wrap items-baseline justify-between gap-x-2 text-[13px] font-medium text-fg">
                 {c.label}
-                <span className={cn("text-xs font-normal", m.className)}>{m.label}</span>
+                <span className={cn("text-xs font-normal", rerunning ? "text-fg-muted" : m.className)}>{rerunning ? "Checking…" : m.label}</span>
               </p>
               <p className="mt-0.5 text-xs text-fg-muted">{c.detail}</p>
             </div>
@@ -213,6 +232,7 @@ function TwilioSections({ integration }: { integration: Integration }) {
 export function IntegrationDrawer({ integration }: { integration: Integration }) {
   const meta = PROVIDER_META[integration.provider];
   const notConnected = integration.status === "not_connected";
+  const [rerunning, setRerunning] = React.useState(false);
 
   return (
     <SheetContent
@@ -246,7 +266,7 @@ export function IntegrationDrawer({ integration }: { integration: Integration })
         ) : null}
 
         <Section title="Health checks">
-          <HealthChecks integration={integration} />
+          <HealthChecks integration={integration} rerunning={rerunning} />
         </Section>
 
         {integration.provider === "ghl" && <GhlSections integration={integration} />}
@@ -284,7 +304,16 @@ export function IntegrationDrawer({ integration }: { integration: Integration })
             <RefreshCw /> Retry all failed syncs
           </Button>
         ) : (
-          <Button onClick={() => toast("Health checks refreshed", { description: "All checks re-run against the provider." })}>
+          <Button
+            loading={rerunning}
+            onClick={() => {
+              setRerunning(true);
+              setTimeout(() => {
+                setRerunning(false);
+                toast("Health checks refreshed", { description: "All checks re-run against the provider." });
+              }, 900);
+            }}
+          >
             <RefreshCw /> Re-run checks
           </Button>
         )}

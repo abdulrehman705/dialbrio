@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FinalCta, aiFeatures } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { CheckList, Container, FeatureGrid, Section, SectionHeading } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "AI", description: "Transcription, call scoring, objection analytics and AI voice agents, built on top of a dialer that works without them." };
 
@@ -27,6 +28,7 @@ export default function AiPage() {
             title="AI suggests. Your rules decide."
             description="We built the dialer first so AI can fail without taking calling down with it."
           />
+          <Reveal delay={0.1}>
           <CheckList
             items={[
               "Every AI result shows its confidence. Nothing is presented as certain.",
@@ -36,6 +38,7 @@ export default function AiPage() {
               "Providers are swappable. Transcripts and recordings stay in your storage.",
             ]}
           />
+          </Reveal>
         </Container>
       </Section>
       <FinalCta />

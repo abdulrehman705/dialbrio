@@ -1,5 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { useReducedMotion } from "motion/react";
+import CountUp from "@/components/reactbits/CountUp";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +38,9 @@ export function KpiStrip({ items, loading, deltaLabel, label, className, columns
               </>
             ) : (
               <>
-                <dd className="font-display text-[28px] leading-8 font-bold tracking-[-0.03em] text-fg">{k.value}</dd>
+                <dd className="font-display text-[28px] leading-8 font-bold tracking-[-0.03em] text-fg">
+                  {typeof k.value === "string" || typeof k.value === "number" ? <CountOnce id={`${label}:${k.label}`} text={String(k.value)} /> : k.value}
+                </dd>
                 <dd className="min-h-4 text-xs">
                   {k.note ? (
                     <span className={k.noteTone === "warning" ? "text-warning-text" : "text-fg-muted"}>{k.note}</span>
@@ -63,6 +69,65 @@ export function Delta({ value, invert, label }: { value: number; invert?: boolea
         {flat ? "0.0%" : `${Math.abs(value * 100).toFixed(1)}%`}
       </span>
       {label && <span className="text-fg-muted">{label}</span>}
+    </span>
+  );
+}
+
+/* ── One-time count-up (React Bits CountUp) ─────────────────────────────── */
+
+/** Metric ids that have already counted up this page session. Refetches and range switches update instantly. */
+const counted = new Set<string>();
+/** Plain numbers only: "1,284", "29.7%", "$1,321.08", "135/hr". Durations like "1m 34s" stay static. */
+const NUMERIC = /^(\$?)(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?(%|\/hr)?$/;
+
+/**
+ * Counts a metric up once, the first time it appears in this session. The final text reserves the
+ * width (no layout shift) and is what screen readers get; reduced motion renders it directly.
+ */
+export function CountOnce({ id, text, duration = 0.6 }: { id: string; text: string; duration?: number }) {
+  const reduce = useReducedMotion();
+  const [animate] = React.useState(() => !counted.has(id));
+  const [first] = React.useState(text);
+  const [settled, setSettled] = React.useState(false);
+  const liveRef = React.useRef<HTMLSpanElement>(null);
+  React.useEffect(() => void counted.add(id), [id]);
+
+  // CountUp's spring creeps through its last fraction for seconds. Once the displayed number is
+  // within 1.5% of the target, swap to the exact text so a total never lingers on a wrong value.
+  React.useEffect(() => {
+    const el = liveRef.current;
+    if (!el || settled) return;
+    const num = (t: string) => Number(t.replace(/[^\d.]/g, ""));
+    const target = num(text);
+    const check = () => {
+      const v = num(el.textContent ?? "");
+      if (target === 0 || Math.abs(target - v) / target < 0.015) setSettled(true);
+    };
+    const mo = new MutationObserver(check);
+    mo.observe(el, { childList: true, subtree: true, characterData: true });
+    return () => mo.disconnect();
+  }, [text, settled]);
+
+  const m = NUMERIC.exec(text);
+  if (!animate || reduce || settled || !m || text !== first) return <>{text}</>;
+
+  const [, prefix = "", whole = "0", frac = "", suffix = ""] = m;
+  const decimals = frac ? frac.length - 1 : 0;
+  const to = Number(`${whole.replace(/,/g, "")}${frac}`);
+  // CountUp derives decimal places from its endpoints; start at the smallest step so "29.70" keeps two.
+  const from = decimals ? Number((10 ** -decimals).toFixed(decimals)) : 0;
+
+  return (
+    <span className="inline-grid">
+      <span aria-hidden className="invisible [grid-area:1/1]">
+        {text}
+      </span>
+      <span ref={liveRef} aria-hidden className="[grid-area:1/1]">
+        {prefix}
+        <CountUp to={to} from={from} duration={duration} separator={whole.includes(",") ? "," : ""} />
+        {suffix}
+      </span>
+      <span className="sr-only">{text}</span>
     </span>
   );
 }

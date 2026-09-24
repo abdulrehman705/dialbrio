@@ -339,6 +339,8 @@ export function CallPanel({ lead, session, ctl }: CallPanelProps) {
             slotsNote="Suggested consult times. Live GoHighLevel calendar availability connects in Phase 4."
             dncConfirmed={s.draft.dncConfirmed}
             onDncConfirmedChange={(dncConfirmed) => s.setDraft({ dncConfirmed })}
+            onDncCommit={() => void ctl.save("dnc")}
+            dncCommitReady={wrap && !ctl.saving}
             phoneLabel={formatPhone(lead.contact.phone)}
             disabled={!pickerEnabled}
           />
@@ -368,7 +370,7 @@ export function SaveButton({ ctl, compact }: { ctl: DialerController; compact?: 
   const draft = useDialerStore((s) => s.draft);
   const wrap = WRAP_STATES.includes(state);
   const valid = isDraftValid(draft);
-  const hint = !wrap ? "End the call to save" : !draft.code ? "Choose an outcome" : !valid ? (draft.code === "callback" ? "Pick a callback time" : draft.code === "appointment" ? "Pick a time slot" : "Confirm DNC") : null;
+  const hint = !wrap ? "End the call to save" : !draft.code ? "Choose an outcome" : !valid ? (draft.code === "callback" ? "Pick a callback time" : draft.code === "appointment" ? "Pick a time slot" : "Hold the Do Not Call button to confirm") : null;
   return (
     <div className="flex flex-col gap-1.5">
       <Button variant="primary" size="lg" className="w-full" disabled={!wrap || !valid} loading={ctl.saving} onClick={() => void ctl.save()} aria-keyshortcuts="Meta+Enter Control+Enter">

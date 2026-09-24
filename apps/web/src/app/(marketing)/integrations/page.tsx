@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CrmWorkflow, FinalCta, IntegrationChips } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "Integrations", description: "Native two-way GoHighLevel sync, with HubSpot and Salesforce next. Webhooks and REST API for everything else." };
 
@@ -24,7 +25,10 @@ export default function IntegrationsPage() {
       <Section aria-labelledby="int-title">
         <Container>
           <SectionHeading id="int-title" eyebrow="Connections" title="What connects, and how deeply" />
+          <Reveal>
           <IntegrationChips className="mt-8" />
+          </Reveal>
+          <Reveal delay={0.08}>
           <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full min-w-[680px] text-[14px]">
               <caption className="sr-only">Integration depth and availability</caption>
@@ -48,6 +52,7 @@ export default function IntegrationsPage() {
               </tbody>
             </table>
           </div>
+          </Reveal>
         </Container>
       </Section>
       <CrmWorkflow />

@@ -9,6 +9,7 @@ import { StatusDot } from "@/components/ui/status-dot";
 import { DISPOSITION_META, LeadStateBadge } from "@/components/domain";
 import type { DispositionCode } from "@dialbrio/types";
 import { cn, formatClock } from "@/lib/utils";
+import { TypedLine } from "./motion";
 
 /*
  * Marketing illustration of the Dialer in parallel mode, composed from real design-system components.
@@ -187,7 +188,12 @@ export function HeroProduct({ className }: { className?: string }) {
                         className="grid grid-cols-[52px_1fr] gap-2 text-[12px] leading-5"
                       >
                         <span className={cn("font-semibold", line.agent ? "text-brand-text" : "text-fg")}>{line.who}</span>
-                        <span className="text-fg-secondary">{line.text}</span>
+                        {i === transcript.length - 1 ? (
+                          // Newest line types in once, like a live transcript; earlier lines are already settled.
+                          <TypedLine text={line.text} delayMs={(0.5 + i * 0.45) * 1000 + 250} className="text-fg-secondary" />
+                        ) : (
+                          <span className="text-fg-secondary">{line.text}</span>
+                        )}
                       </motion.li>
                     ))}
                   </ol>
