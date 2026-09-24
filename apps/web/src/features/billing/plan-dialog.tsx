@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { ANNUAL_DISCOUNT, PLANS, formatPlanPrice, type PlanId } from "@dialbrio/types";
+import { DEFAULT_PRICE_BOOK, formatPlanPrice, type PlanId } from "@dialbrio/types";
+import { usePriceBook } from "@/lib/queries";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
@@ -12,6 +13,7 @@ import { PlannedMarker } from "@/components/app/planned-marker";
 /** Plan comparison. Changing plan is not wired yet — it will run through Stripe checkout (Phase 7). */
 export function PlanDialog({ open, onOpenChange, current }: { open: boolean; onOpenChange: (v: boolean) => void; current: PlanId }) {
   const [interval, setInterval] = React.useState<"monthly" | "annual">("monthly");
+  const { data: pb = DEFAULT_PRICE_BOOK } = usePriceBook();
   const annual = interval === "annual";
 
   return (
@@ -28,14 +30,14 @@ export function PlanDialog({ open, onOpenChange, current }: { open: boolean; onO
             onValueChange={setInterval}
             options={[
               { value: "monthly", label: "Monthly" },
-              { value: "annual", label: `Annual −${ANNUAL_DISCOUNT * 100}%` },
+              { value: "annual", label: `Annual −${Math.round(pb.annualDiscount * 100)}%` },
             ]}
           />
         </div>
         <ul className="grid gap-px border-y border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {PLANS.map((p) => {
+          {pb.plans.map((p) => {
             const isCurrent = p.id === current;
-            const inherits = p.inheritsFrom ? PLANS.find((x) => x.id === p.inheritsFrom)?.name : null;
+            const inherits = p.inheritsFrom ? pb.plans.find((x) => x.id === p.inheritsFrom)?.name : null;
             return (
               <li key={p.id} className={cn("flex flex-col gap-4 bg-surface p-5", isCurrent && "bg-brand-soft")}>
                 <div>
@@ -46,7 +48,7 @@ export function PlanDialog({ open, onOpenChange, current }: { open: boolean; onO
                   <p className="mt-1 text-[13px] leading-5 text-fg-muted">{p.audience}</p>
                 </div>
                 <p className="flex items-baseline gap-1">
-                  <span className="font-display text-[32px] leading-none font-bold tracking-[-0.03em] text-fg">{formatPlanPrice(p, annual)}</span>
+                  <span className="font-display text-[32px] leading-none font-bold tracking-[-0.03em] text-fg">{formatPlanPrice(p, annual, pb.annualDiscount)}</span>
                   {p.monthlyCents !== null && <span className="text-[13px] text-fg-muted">/mo{annual && ", billed yearly"}</span>}
                 </p>
                 <ul className="flex flex-col gap-1.5 text-[13px] text-fg-secondary">
@@ -69,7 +71,7 @@ export function PlanDialog({ open, onOpenChange, current }: { open: boolean; onO
                       <Check className="mt-0.5 size-3.5 shrink-0 text-brand" aria-hidden />
                       <span>
                         {h}
-                        <PlannedMarker highlight={h} />
+                        <PlannedMarker highlight={h} notes={p.plannedNotes} />
                       </span>
                     </li>
                   ))}

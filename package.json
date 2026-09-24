@@ -6,6 +6,10 @@
     "dev": "pnpm --filter @dialbrio/web dev",
     "build": "pnpm --filter @dialbrio/web build",
     "start": "pnpm --filter @dialbrio/web start",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "dev:studio": "pnpm --filter @dialbrio/studio dev",
+    "dev:all": "pnpm --parallel --filter @dialbrio/web --filter @dialbrio/studio dev",
+    "typegen": "pnpm --filter @dialbrio/studio typegen",
+    "sanity:seed": "pnpm --filter @dialbrio/studio seed"
   }
 }

@@ -10,6 +10,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   transpilePackages: ["@dialbrio/types", "@dialbrio/integrations"],
   poweredByHeader: false,
+  images: {
+    // Sanity image CDN (blog covers, customer logos, author photos).
+    remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io" }],
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

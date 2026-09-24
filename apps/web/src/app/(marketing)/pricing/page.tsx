@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { COMPARISON, COMPARISON_FOOTNOTE, PRICING_FAQ, TRIAL, USAGE_RATES } from "@dialbrio/types";
+import { getPriceBook } from "@/sanity/price-book";
 import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/marketing/home";
 import { PricingPlans } from "@/components/marketing/pricing-plans";
@@ -15,10 +15,12 @@ export const metadata: Metadata = {
 
 const th = "px-5 py-3 text-left font-mono text-[11.5px] font-medium tracking-[0.06em] text-fg-muted uppercase";
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const pb = await getPriceBook();
+  const { first, second } = pb.competitorLabels;
   return (
     <>
-      <PricingPlans />
+      <PricingPlans priceBook={{ plans: pb.plans, annualDiscount: pb.annualDiscount }} />
 
       <Section aria-labelledby="usage-title">
         <Container>
@@ -31,16 +33,16 @@ export default function PricingPage() {
           <Reveal>
           <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full min-w-[640px] text-[14px]">
-              <caption className="sr-only">DialBrio usage rates compared with HotProspector</caption>
+              <caption className="sr-only">DialBrio usage rates compared with {first}</caption>
               <thead className="border-b border-border">
                 <tr>
                   <th scope="col" className={th}>Item</th>
                   <th scope="col" className={th}>DialBrio</th>
-                  <th scope="col" className={th}>HotProspector</th>
+                  <th scope="col" className={th}>{first}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {USAGE_RATES.map((r) => (
+                {pb.usageRates.map((r) => (
                   <tr key={r.id}>
                     <th scope="row" className="px-5 py-4 text-left font-normal text-fg">{r.label}</th>
                     <td className="px-5 py-4">
@@ -63,27 +65,27 @@ export default function PricingPage() {
           <Reveal>
           <div className="mt-10 overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full min-w-[760px] text-[14px]">
-              <caption className="sr-only">Monthly cost scenarios: DialBrio, HotProspector and Kixie</caption>
+              <caption className="sr-only">Monthly cost scenarios: DialBrio, {first} and {second}</caption>
               <thead className="border-b border-border">
                 <tr>
                   <th scope="col" className={th}>Monthly cost scenario</th>
                   <th scope="col" className={th}>DialBrio</th>
-                  <th scope="col" className={th}>HotProspector</th>
-                  <th scope="col" className={th}>Kixie (per-seat)</th>
+                  <th scope="col" className={th}>{first}</th>
+                  <th scope="col" className={th}>{second}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {COMPARISON.map((row) => (
+                {pb.comparison.map((row) => (
                   <tr key={row.scenario}>
                     <th scope="row" className="px-5 py-4 text-left font-medium text-fg">{row.scenario}</th>
                     <td className={row.emphasis ? "px-5 py-4 font-display text-[18px] font-bold tracking-[-0.02em] text-brand-text" : "px-5 py-4 font-medium text-brand-text"}>{row.us}</td>
-                    <td className="px-5 py-4 text-fg-secondary">{row.hotProspector}</td>
-                    <td className="px-5 py-4 text-fg-secondary">{row.kixie}</td>
+                    <td className="px-5 py-4 text-fg-secondary">{row.first}</td>
+                    <td className="px-5 py-4 text-fg-secondary">{row.second}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p className="border-t border-border px-5 py-4 text-[12.5px] leading-5 text-fg-muted">{COMPARISON_FOOTNOTE}</p>
+            <p className="border-t border-border px-5 py-4 text-[12.5px] leading-5 text-fg-muted">{pb.comparisonFootnote}</p>
           </div>
           </Reveal>
 
@@ -91,10 +93,10 @@ export default function PricingPage() {
           <div className="mt-12 flex flex-col gap-5 rounded-xl border border-warning bg-warning-soft p-6 sm:p-8 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="font-display text-[24px] leading-tight font-bold tracking-[-0.025em] text-fg">
-                Try it on your own leads, free for {TRIAL.days} days.
+                Try it on your own leads, free for {pb.trial.days} days.
               </h2>
               <p className="mt-2 max-w-[620px] text-[15px] leading-6 text-fg-secondary">
-                Full platform, {TRIAL.freeMinutes} free minutes, no credit card. Month-to-month after that; cancel anytime and export everything.
+                Full platform, {pb.trial.freeMinutes.toLocaleString("en-US")} free minutes{pb.trial.cardRequired ? "" : ", no credit card"}. Month-to-month after that; cancel anytime and export everything.
               </p>
             </div>
             <Button asChild variant="secondary" size="lg" className="shrink-0">
@@ -109,7 +111,7 @@ export default function PricingPage() {
         <Container className="grid gap-10 lg:grid-cols-[340px_1fr] lg:gap-16">
           <SectionHeading id="faq-title" eyebrow="FAQ" title="Pricing questions, answered" />
           <Reveal delay={0.08} className="flex flex-col gap-3">
-            {PRICING_FAQ.map((f) => (
+            {pb.faq.map((f) => (
               <details key={f.q} className="group rounded-xl border border-border bg-surface open:shadow-sm">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-[15.5px] font-semibold text-fg [&::-webkit-details-marker]:hidden">
                   {f.q}

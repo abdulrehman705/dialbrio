@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { PLANS, TRIAL, formatPlanPrice } from "@dialbrio/types";
+import { formatPlanPrice, trialLine } from "@dialbrio/types";
+import { getPriceBook } from "@/sanity/price-book";
 import { Button } from "@/components/ui/button";
 import { HeroProduct } from "./hero-product";
 import { CountNumber, Marquee, Reveal, RevealHeading, RevealStatement } from "./motion";
 import { Container, Eyebrow, FeatureCard, FeatureGrid, InkPanel, Section, SectionHeading, SpecChip, type Feature } from "./primitives";
 
-export const TRIAL_LINE = `${TRIAL.days}-day free trial · ${TRIAL.freeMinutes} free minutes · no credit card`;
 
 /* ── Hero ─────────────────────────────────────────────────────────────── */
 
@@ -17,7 +17,8 @@ const heroStats: { prefix?: string; n?: number; suffix: string; label: string }[
   { suffix: "1 price", label: "per plan, no feature add-ons" },
 ];
 
-export function Hero() {
+export async function Hero() {
+  const { trial } = await getPriceBook();
   return (
     <section className="bg-background pt-3 sm:pt-4">
       <div className="px-3 sm:px-4">
@@ -43,7 +44,7 @@ export function Hero() {
                 <Link href="#dialing-engine">See how it works</Link>
               </Button>
             </div>
-            <p className="mt-4 font-mono text-xs text-fg-muted">{TRIAL_LINE}</p>
+            <p className="mt-4 font-mono text-xs text-fg-muted">{trialLine(trial)}</p>
 
             <dl className="mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
               {heroStats.map((s) => (
@@ -432,8 +433,9 @@ export function Agencies() {
 
 /* ── Pricing band + final CTA ─────────────────────────────────────────── */
 
-export function PricingBand() {
-  const plans = PLANS.filter((p) => p.monthlyCents !== null);
+export async function PricingBand() {
+  const { plans: allPlans, annualDiscount } = await getPriceBook();
+  const plans = allPlans.filter((p) => p.monthlyCents !== null);
   return (
     <Section surface aria-labelledby="pricing-band-title" className="py-16 md:py-20">
       <Reveal>
@@ -452,7 +454,7 @@ export function PricingBand() {
             <div key={p.id}>
               <div className="text-[13px] text-fg-muted">{p.name}</div>
               <div className="font-display text-[32px] leading-none font-bold tracking-[-0.03em] text-fg">
-                {formatPlanPrice(p, false)}
+                {formatPlanPrice(p, false, annualDiscount)}
                 <span className="font-sans text-[14px] font-normal tracking-normal text-fg-muted">/mo</span>
               </div>
             </div>
@@ -469,7 +471,8 @@ export function PricingBand() {
   );
 }
 
-export function FinalCta() {
+export async function FinalCta() {
+  const { trial } = await getPriceBook();
   return (
     <section aria-labelledby="final-cta-title" className="bg-background px-3 pt-4 pb-16 sm:px-4 md:pb-24">
       <Container>
@@ -480,7 +483,7 @@ export function FinalCta() {
               See it dial your own list.
             </h2>
             <p className="mt-3 text-[15px] leading-6 text-fg-secondary">
-              {TRIAL_LINE} · white-glove migration on Agency plans.
+              {trialLine(trial)} · white-glove migration on Agency plans.
             </p>
           </div>
           <Button asChild variant="primary" size="lg" className="shrink-0">

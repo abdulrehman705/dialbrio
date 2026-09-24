@@ -26,6 +26,7 @@
 dialbrio/
 ├─ apps/
 │  ├─ web/            Next.js App Router — marketing site + authenticated app (this pass)
+│  │                  (studio/ at the repo root holds the standalone Sanity Studio — see §15)
 │  ├─ api/            NestJS modular monolith (Phase 1+) — prisma/schema.prisma defines the model
 │  └─ worker/         Temporal workers + webhook processors (Phase 1+)
 ├─ packages/
@@ -303,3 +304,52 @@ Rules:
 - Swapping mock → real: implement `DialBrioApi` in `lib/api/http`, set `NEXT_PUBLIC_API_MODE=http`.
   No component changes.
 - Heavy charts are loaded with `next/dynamic`. Client components only where interaction requires.
+
+## 15. Content management (Sanity)
+
+Marketing content and the price book are managed in **Sanity** (project `u470ygx5`, dataset `production`).
+Product data (contacts, calls, campaigns) never goes to Sanity; it stays in PostgreSQL behind the API.
+
+**Layout.** A standalone Studio lives in `studio/` (its own Vite app, auto-updating, `pnpm dev:studio` →
+localhost:3333). It is **not** embedded in the Next.js app. `apps/web` reads content through `next-sanity`.
+
+| Content | Sanity type(s) | Rendered at |
+| --- | --- | --- |
+| Price book | `plan`, `usageRate`, `comparisonRow`, `pricingPage` (singleton), `faq` | `/pricing`, home pricing band, trial lines, app Billing, Settings → Billing |
+| Blog | `post`, `author`, `category` | `/blog`, `/blog/[slug]` |
+| Changelog | `changelogEntry` | `/changelog` |
+| Customer stories | `customerStory` | Modelled; page not built yet |
+| Site defaults | `siteSettings` (singleton) | Modelled; used for SEO defaults later |
+
+Singletons are locked to fixed ids (`siteSettings`, `pricingPage`) through Studio Structure and cannot be
+created from the global menu, duplicated or deleted. Everything else uses Sanity-generated ids and references.
+
+**Price book flow.**
+
+```
+Studio (plan / usageRate / comparisonRow / pricingPage / faq)
+   │  published
+   ▼
+apps/web/src/sanity/price-book.ts  getPriceBook()   ← server-only, React cache, Live Content API
+   │  maps GROQ result → PriceBook (packages/types/src/pricing.ts)
+   │  per-section fallback to DEFAULT_PRICE_BOOK (code) if empty; whole-book fallback if Sanity fails
+   ├─► server components: /pricing, PricingBand, Hero/FinalCta/PageHero trial lines
+   └─► GET /api/price-book ─► DialBrioApi.getPriceBook() ─► usePriceBook() ─► Billing screen, plan dialog, Settings
+```
+
+`planKey` (solo/team/agency/enterprise) and `itemKey` (outbound_min, …) are stable identifiers shared with billing;
+editors change names, prices and copy freely but should not change keys once live. Invoice maths in the mock
+billing data still uses the code price book; the real billing service (Phase 7) will read the same Sanity values.
+
+**Freshness.** `defineLive` + `<SanityLive />` (root layout) keep pages cached and revalidate them when content is
+published; the browser holds one `text/event-stream` connection to the Live Content API. CORS origins configured:
+`localhost:3000`, `localhost:3200`, `localhost:3333` — add the production URL before launch
+(`pnpm --filter @dialbrio/studio exec sanity cors add https://… --credentials`).
+
+**Types.** TypeGen is configured in `studio/sanity.cli.ts` to scan `apps/web/src` and write
+`apps/web/src/sanity/sanity.types.ts`; run `pnpm typegen` after schema or query changes. Queries live in
+`apps/web/src/sanity/queries.ts` with unique names.
+
+**Secrets.** Project id and dataset are public (`NEXT_PUBLIC_SANITY_*`). `SANITY_API_READ_TOKEN` is optional and
+server-only (needed later for draft previews / Visual Editing). No write token is used by the web app; seeding runs
+through the CLI with the developer's own login (`pnpm sanity:seed`, idempotent).

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TRIAL_LINE } from "./home";
+import { trialLine } from "@dialbrio/types";
+import { getPriceBook } from "@/sanity/price-book";
 import { Container, Eyebrow, InkPanel } from "./primitives";
 
 interface PageHeroProps {
@@ -13,7 +14,8 @@ interface PageHeroProps {
 }
 
 /** Light Mono hero for secondary pages, inset from the page edges. */
-export function PageHero({ eyebrow, title, description, cta = true, children }: PageHeroProps) {
+export async function PageHero({ eyebrow, title, description, cta = true, children }: PageHeroProps) {
+  const { trial } = await getPriceBook();
   return (
     <section className="bg-background px-3 pt-3 sm:px-4 sm:pt-4">
       <InkPanel tone="paper" className="mx-auto max-w-[1400px] py-16 md:py-20">
@@ -28,7 +30,7 @@ export function PageHero({ eyebrow, title, description, cta = true, children }: 
                   Start free trial <ArrowRight />
                 </Link>
               </Button>
-              <p className="font-mono text-xs text-fg-muted sm:ml-3">{TRIAL_LINE}</p>
+              <p className="font-mono text-xs text-fg-muted sm:ml-3">{trialLine(trial)}</p>
             </div>
           )}
           {children}

@@ -4,7 +4,7 @@ import { Container } from "./primitives";
 
 const columns = [
   { title: "Product", links: [["Overview", "/product"], ["Dialer", "/dialer"], ["AI", "/ai"], ["Conversations", "/conversations"], ["Integrations", "/integrations"]] },
-  { title: "Company", links: [["Pricing", "/pricing"], ["Security & compliance", "/security"], ["Start free trial", "/get-started"], ["Log in", "/login"]] },
+  { title: "Company", links: [["Pricing", "/pricing"], ["Blog", "/blog"], ["Changelog", "/changelog"], ["Security & compliance", "/security"], ["Start free trial", "/get-started"], ["Log in", "/login"]] },
 ] as const;
 
 export function SiteFooter() {

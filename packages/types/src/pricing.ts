@@ -20,6 +20,8 @@ export interface Plan {
   cta: "trial" | "sales";
   popular?: boolean;
   includedAiMinutes?: number;
+  /** Highlights that describe roadmap features, mapped to the tooltip explaining when they ship. */
+  plannedNotes?: Record<string, string>;
 }
 
 export const ANNUAL_DISCOUNT = 0.2;
@@ -121,15 +123,16 @@ export const USAGE_RATES: UsageRate[] = [
 
 export const SEAT_FIVE_PACK_CENTS = 22500;
 
-export interface ComparisonRow { scenario: string; us: string; hotProspector: string; kixie: string; emphasis?: boolean }
+/** `first`/`second` are the two competitor columns; their labels live on the PriceBook. */
+export interface ComparisonRow { scenario: string; us: string; first: string; second: string; emphasis?: boolean }
 
 export const COMPARISON: ComparisonRow[] = [
-  { scenario: "Solo rep, 1 number, 3k min", us: "$146", hotProspector: "$200", kixie: "~$115 + $50 parallel add-on", emphasis: true },
-  { scenario: "5-rep team, 10 numbers, 20k min", us: "$567", hotProspector: "$797*", kixie: "$500+ before add-ons", emphasis: true },
-  { scenario: "Agency: 10 reps, 15 clients, 60k min", us: "$1,377", hotProspector: "$1,902*", kixie: "Not multi-tenant", emphasis: true },
-  { scenario: "Parallel dialing", us: "Included (4 lines)", hotProspector: "Included (3 lines)", kixie: "+$50/user/mo" },
-  { scenario: "White-label + sub-accounts", us: "Included on Agency", hotProspector: "Included on Agency", kixie: "Not offered" },
-  { scenario: "Free trial", us: "14 days, self-serve", hotProspector: "Demo call required", kixie: "7 days" },
+  { scenario: "Solo rep, 1 number, 3k min", us: "$146", first: "$200", second: "~$115 + $50 parallel add-on", emphasis: true },
+  { scenario: "5-rep team, 10 numbers, 20k min", us: "$567", first: "$797*", second: "$500+ before add-ons", emphasis: true },
+  { scenario: "Agency: 10 reps, 15 clients, 60k min", us: "$1,377", first: "$1,902*", second: "Not multi-tenant", emphasis: true },
+  { scenario: "Parallel dialing", us: "Included (4 lines)", first: "Included (3 lines)", second: "+$50/user/mo" },
+  { scenario: "White-label + sub-accounts", us: "Included on Agency", first: "Included on Agency", second: "Not offered" },
+  { scenario: "Free trial", us: "14 days, self-serve", first: "Demo call required", second: "7 days" },
 ];
 
 export const COMPARISON_FOOTNOTE =
@@ -143,9 +146,9 @@ export const PRICING_FAQ: { q: string; a: string }[] = [
   { q: "Do you charge more for TCPA compliance tools?", a: "Never. DNC scrubbing, consent tracking, calling-hours enforcement, and spam-label monitoring are included on every plan, including the trial. Compliance shouldn't be an upsell." },
 ];
 
-export function formatPlanPrice(plan: Plan, annual: boolean): string {
+export function formatPlanPrice(plan: Plan, annual: boolean, annualDiscount: number = ANNUAL_DISCOUNT): string {
   if (plan.monthlyCents === null) return "Custom";
-  const cents = annual ? Math.round(plan.monthlyCents * (1 - ANNUAL_DISCOUNT)) : plan.monthlyCents;
+  const cents = annual ? Math.round(plan.monthlyCents * (1 - annualDiscount)) : plan.monthlyCents;
   return `$${Math.round(cents / 100)}`;
 }
 
@@ -165,4 +168,39 @@ const PLANNED_HIGHLIGHTS: [RegExp, string][] = [
 
 export function plannedStatus(highlight: string): string | null {
   return PLANNED_HIGHLIGHTS.find(([re]) => re.test(highlight))?.[1] ?? null;
+}
+
+/**
+ * Everything the pricing page and billing need, in one object. The web app loads it from Sanity
+ * (studio/: plan, usageRate, comparisonRow, faq, pricingPage) and falls back, section by section,
+ * to DEFAULT_PRICE_BOOK when a section is empty or Sanity is unreachable.
+ */
+export interface PriceBook {
+  plans: Plan[];
+  usageRates: UsageRate[];
+  comparison: ComparisonRow[];
+  competitorLabels: { first: string; second: string };
+  comparisonFootnote: string;
+  faq: { q: string; a: string }[];
+  trial: { days: number; freeMinutes: number; cardRequired: boolean };
+  /** 0..1, e.g. 0.2 for 20% off annual. */
+  annualDiscount: number;
+  /** Where the data came from; "code" means the Sanity fetch was empty or failed. */
+  source: "sanity" | "code" | "mixed";
+}
+
+export const DEFAULT_PRICE_BOOK: PriceBook = {
+  plans: PLANS,
+  usageRates: USAGE_RATES,
+  comparison: COMPARISON,
+  competitorLabels: { first: "HotProspector", second: "Kixie (per-seat)" },
+  comparisonFootnote: COMPARISON_FOOTNOTE,
+  faq: PRICING_FAQ,
+  trial: { days: TRIAL.days, freeMinutes: TRIAL.freeMinutes, cardRequired: TRIAL.cardRequired },
+  annualDiscount: ANNUAL_DISCOUNT,
+  source: "code",
+};
+
+export function trialLine(trial: PriceBook["trial"]): string {
+  return `${trial.days}-day free trial · ${trial.freeMinutes.toLocaleString("en-US")} free minutes${trial.cardRequired ? "" : " · no credit card"}`;
 }

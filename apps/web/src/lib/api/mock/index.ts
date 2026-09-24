@@ -11,6 +11,7 @@ import type { DialBrioApi } from "../types";
 import { ApiError } from "../types";
 import * as db from "./seed";
 import { settingsStore } from "./settings-seed";
+import { fetchPriceBook } from "../price-book";
 
 const latency = (min = 180, max = 520) => new Promise((r) => setTimeout(r, min + Math.random() * (max - min)));
 async function respond<T>(value: T, min?: number, max?: number): Promise<T> {
@@ -480,6 +481,7 @@ export const mockApi: DialBrioApi = {
   listPhoneNumbers: () => respond(db.phoneNumbers),
   listAppointments: () => respond(db.appointments),
   getBilling: () => respond(billingOverview()),
+  getPriceBook: fetchPriceBook,
 
   getSettings: (section) => respond(settingsStore[section] ?? {}, 150, 350),
   async updateSettings(section, values) {

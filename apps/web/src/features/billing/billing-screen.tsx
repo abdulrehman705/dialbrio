@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PLANS, TRIAL, USAGE_RATES, ANNUAL_DISCOUNT, type BillingOverview, type BillingUsageLine } from "@dialbrio/types";
+import { DEFAULT_PRICE_BOOK, type BillingOverview, type BillingUsageLine, type Plan, type UsageRate } from "@dialbrio/types";
 import { Check, CreditCard, Download, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,7 @@ import { Page, PageHeader } from "@/components/ui/page-header";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState, ErrorState } from "@/components/states";
-import { useBilling } from "@/lib/queries";
+import { useBilling, usePriceBook } from "@/lib/queries";
 import { cn, formatNumber } from "@/lib/utils";
 import { money, moneyWhole, periodInfo } from "./format";
 import { PlanDialog } from "./plan-dialog";
@@ -21,8 +21,13 @@ import { CountOnce } from "@/components/charts/kpi-strip";
 const stripeLater = (what: string) =>
   toast(`${what} opens the Stripe billing portal`, { description: "The portal connects in Phase 7. Nothing was changed." });
 
-function unitLabel(line: BillingUsageLine) {
-  const rate = USAGE_RATES.find((r) => r.id === line.id);
+/** Plan for the subscription, from Sanity when available, else the code price book. */
+function findPlan(plans: Plan[], id: string) {
+  return plans.find((p) => p.id === id) ?? DEFAULT_PRICE_BOOK.plans.find((p) => p.id === id)!;
+}
+
+function unitLabel(line: BillingUsageLine, rates: UsageRate[]) {
+  const rate = rates.find((r) => r.id === line.id);
   const unit = rate?.unit ?? "";
   const plural = line.quantity === 1 ? unit : unit === "min" ? "min" : `${unit}s`;
   return `${formatNumber(line.quantity)} ${plural}`;
@@ -30,7 +35,8 @@ function unitLabel(line: BillingUsageLine) {
 
 /* ── Estimated invoice ledger ─────────────────────────────────────────── */
 function InvoiceLedger({ b }: { b: BillingOverview }) {
-  const plan = PLANS.find((p) => p.id === b.planId)!;
+  const { data: pb = DEFAULT_PRICE_BOOK } = usePriceBook();
+  const plan = findPlan(pb.plans, b.planId);
   const period = periodInfo(b.periodStart, b.periodEnd);
   return (
     <Card className="flex min-w-0 flex-col">
@@ -80,7 +86,7 @@ function InvoiceLedger({ b }: { b: BillingOverview }) {
               <tr key={u.id}>
                 <td className="py-2.5 pl-5 text-fg">{u.label}</td>
                 <td className="py-2.5 text-fg-secondary">
-                  {unitLabel(u)}
+                  {unitLabel(u, pb.usageRates)}
                   {u.included > 0 && <span className="text-fg-muted"> · {formatNumber(u.included)} included</span>}
                   <span className="block font-mono text-xs text-fg-muted sm:hidden">{u.rate}</span>
                 </td>
@@ -110,9 +116,10 @@ function InvoiceLedger({ b }: { b: BillingOverview }) {
 
 /* ── Plan panel (dark ink) ────────────────────────────────────────────── */
 function PlanPanel({ b, onChangePlan }: { b: BillingOverview; onChangePlan: () => void }) {
-  const plan = PLANS.find((p) => p.id === b.planId)!;
-  const annualMonthly = plan.monthlyCents ? Math.round(plan.monthlyCents * (1 - ANNUAL_DISCOUNT)) : null;
-  const inherits = plan.inheritsFrom ? PLANS.find((p) => p.id === plan.inheritsFrom)?.name : null;
+  const { data: pb = DEFAULT_PRICE_BOOK } = usePriceBook();
+  const plan = findPlan(pb.plans, b.planId);
+  const annualMonthly = plan.monthlyCents ? Math.round(plan.monthlyCents * (1 - pb.annualDiscount)) : null;
+  const inherits = plan.inheritsFrom ? pb.plans.find((p) => p.id === plan.inheritsFrom)?.name : null;
   return (
     <div className="dark flex min-w-0 flex-col gap-5 rounded-lg border border-border bg-background p-5 text-fg">
       <div>
@@ -151,7 +158,7 @@ function PlanPanel({ b, onChangePlan }: { b: BillingOverview; onChangePlan: () =
               <Check className="mt-0.5 size-3.5 shrink-0 text-brand" aria-hidden />
               <span>
                 {h}
-                <PlannedMarker highlight={h} />
+                <PlannedMarker highlight={h} notes={plan.plannedNotes} />
               </span>
             </li>
           ))}
@@ -374,6 +381,7 @@ function Invoices({ b }: { b: BillingOverview }) {
 
 export function BillingScreen() {
   const { data: b, isLoading, isError, refetch } = useBilling();
+  const { data: pb = DEFAULT_PRICE_BOOK } = usePriceBook();
   const [plansOpen, setPlansOpen] = React.useState(false);
 
   return (
@@ -407,7 +415,7 @@ export function BillingScreen() {
             <Invoices b={b} />
           </div>
           <p className="text-xs text-fg-muted">
-            New workspaces start with a {TRIAL.days}-day trial and {formatNumber(TRIAL.freeMinutes)} free minutes, no card required. Compliance tools
+            New workspaces start with a {pb.trial.days}-day trial and {formatNumber(pb.trial.freeMinutes)} free minutes, no card required. Compliance tools
             are never billed separately.
           </p>
           <PlanDialog open={plansOpen} onOpenChange={setPlansOpen} current={b.planId} />

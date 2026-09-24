@@ -23,5 +23,6 @@ export const qk = {
   numbers: (sub: string) => ["numbers", sub] as const,
   appointments: (sub: string) => ["appointments", sub] as const,
   billing: (org: string) => ["billing", org] as const,
+  priceBook: ["price-book"] as const,
   settings: (sub: string, section: string) => ["settings", sub, section] as const,
 };

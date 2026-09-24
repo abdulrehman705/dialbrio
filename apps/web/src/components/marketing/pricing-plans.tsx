@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
-import { ANNUAL_DISCOUNT, PLANS, formatPlanPrice, type Plan } from "@dialbrio/types";
+import { formatPlanPrice, type Plan, type PriceBook } from "@dialbrio/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Container, Eyebrow, InkPanel } from "./primitives";
@@ -11,8 +11,8 @@ import { PlannedMarker } from "@/components/app/planned-marker";
 
 type Interval = "monthly" | "annual";
 
-function PlanCard({ plan, interval }: { plan: Plan; interval: Interval }) {
-  const parent = PLANS.find((p) => p.id === plan.inheritsFrom);
+function PlanCard({ plan, plans, interval, annualDiscount }: { plan: Plan; plans: Plan[]; interval: Interval; annualDiscount: number }) {
+  const parent = plans.find((p) => p.id === plan.inheritsFrom);
   const custom = plan.monthlyCents === null;
   return (
     <article
@@ -32,11 +32,11 @@ function PlanCard({ plan, interval }: { plan: Plan; interval: Interval }) {
         <p className="mt-1 text-[14px] leading-5 text-fg-secondary">{plan.audience}</p>
       </div>
       <div className="mt-6 flex items-baseline gap-1.5">
-        <span className="font-display text-[48px] leading-none font-extrabold tracking-[-0.04em]">{formatPlanPrice(plan, interval === "annual")}</span>
+        <span className="font-display text-[48px] leading-none font-extrabold tracking-[-0.04em]">{formatPlanPrice(plan, interval === "annual", annualDiscount)}</span>
         {!custom && <span className="text-[14px] text-fg-muted">/mo</span>}
       </div>
       <p className="mt-2 h-5 text-[12.5px] text-fg-muted">
-        {custom ? "Volume pricing on seats and minutes" : interval === "annual" ? `Billed annually · ${formatPlanPrice(plan, false)}/mo monthly` : "Billed monthly · cancel anytime"}
+        {custom ? "Volume pricing on seats and minutes" : interval === "annual" ? `Billed annually · ${formatPlanPrice(plan, false, annualDiscount)}/mo monthly` : "Billed monthly · cancel anytime"}
       </p>
 
       <ul className="mt-6 flex flex-1 flex-col gap-2.5 border-t border-border pt-5 text-[14px] leading-5">
@@ -62,7 +62,7 @@ function PlanCard({ plan, interval }: { plan: Plan; interval: Interval }) {
               <Check className="mt-0.5 size-4 shrink-0 text-brand" aria-hidden />
               <span>
                 {h}
-                <PlannedMarker highlight={h} />
+                <PlannedMarker highlight={h} notes={plan.plannedNotes} />
               </span>
             </li>
           ))}
@@ -76,7 +76,8 @@ function PlanCard({ plan, interval }: { plan: Plan; interval: Interval }) {
 }
 
 /** Ink pricing header with the monthly/annual toggle, and the plan cards overlapping onto paper. */
-export function PricingPlans() {
+export function PricingPlans({ priceBook }: { priceBook: Pick<PriceBook, "plans" | "annualDiscount"> }) {
+  const { plans, annualDiscount } = priceBook;
   const [interval, setInterval] = React.useState<Interval>("monthly");
   return (
     <section aria-label="Plans" className="bg-background">
@@ -96,7 +97,7 @@ export function PricingPlans() {
                 {(
                   [
                     ["monthly", "Monthly", null],
-                    ["annual", "Annual", `−${ANNUAL_DISCOUNT * 100}%`],
+                    ["annual", "Annual", `−${Math.round(annualDiscount * 100)}%`],
                   ] as const
                 ).map(([value, label, note]) => {
                   const on = interval === value;
@@ -113,7 +114,7 @@ export function PricingPlans() {
                       )}
                     >
                       {label}
-                      {note && <span className={cn("text-[12.5px]", on ? "text-white/85" : "text-brand-text")}>{note}</span>}
+                      {note && <span className={cn("text-[12.5px]", on ? "opacity-80" : "text-fg-muted")}>{note}</span>}
                     </button>
                   );
                 })}
@@ -127,8 +128,8 @@ export function PricingPlans() {
       </div>
       <Container className="-mt-32">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {PLANS.map((p) => (
-            <PlanCard key={p.id} plan={p} interval={interval} />
+          {plans.map((p) => (
+            <PlanCard key={p.id} plan={p} plans={plans} interval={interval} annualDiscount={annualDiscount} />
           ))}
         </div>
       </Container>

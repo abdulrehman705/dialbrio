@@ -1,5 +1,6 @@
 import type { DialBrioApi } from "../types";
 import { ApiError } from "../types";
+import { fetchPriceBook } from "../price-book";
 import type { ApiErrorBody } from "@dialbrio/types";
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -72,6 +73,7 @@ export const httpApi: DialBrioApi = {
   listPhoneNumbers: () => request("/phone-numbers"),
   listAppointments: () => request("/appointments"),
   getBilling: () => request("/billing/overview"),
+  getPriceBook: fetchPriceBook,
 
   getSettings: (section) => request(`/settings/${section}`),
   updateSettings: (section, values) => request(`/settings/${section}`, { method: "PATCH", body: JSON.stringify(values) }),

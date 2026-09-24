@@ -22,6 +22,7 @@ apps/worker         Temporal workers + webhook processors (Phase 1)
 packages/types      Shared domain types, API/event contracts, permission map
 packages/integrations  CRMAdapter, TelephonyProvider, AI providers, DialStrategy interfaces
 packages/tsconfig   Base TypeScript config
+studio              Sanity Studio (standalone) — marketing content + price book
 ```
 
 ## Getting started
@@ -31,9 +32,27 @@ Requires Node 22+ and pnpm 11.
 ```bash
 pnpm install
 pnpm dev          # http://localhost:3000  (marketing at /, app at /app)
+pnpm dev:studio   # Sanity Studio at http://localhost:3333
+pnpm dev:all      # both, in parallel
 pnpm typecheck
 pnpm build
 ```
+
+Copy `apps/web/.env.example` to `apps/web/.env.local` (the Sanity project id and dataset are prefilled).
+
+### Content (Sanity)
+
+Marketing content and pricing are edited in the Studio (`studio/`, project `u470ygx5`, dataset `production`):
+plans, usage rates, comparison rows, pricing FAQs, blog posts, changelog, customer stories. The website and the
+in-app Billing screen read them live; if Sanity is unreachable they fall back to the code price book.
+
+```bash
+pnpm dev:studio      # edit content
+pnpm typegen         # regenerate query types after schema/query changes
+pnpm sanity:seed     # (re)seed the launch price book; skips anything that already exists
+```
+
+Details: `docs/architecture.md` §15.
 
 ### Data mode
 

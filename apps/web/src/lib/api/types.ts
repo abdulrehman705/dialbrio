@@ -1,4 +1,5 @@
 import type {
+  PriceBook,
   BillingOverview,
   ParallelLines,
   SettingsSection,
@@ -92,6 +93,8 @@ export interface DialBrioApi {
 
   // billing
   getBilling(): Promise<BillingOverview>;
+  /** Plans, usage rates and trial terms (CMS content, served by app/api/price-book). */
+  getPriceBook(): Promise<PriceBook>;
 
   // settings
   getSettings(section: SettingsSection): Promise<SettingsValues>;

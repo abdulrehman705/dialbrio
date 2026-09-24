@@ -1,21 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { PLANS } from "@dialbrio/types";
+import { DEFAULT_PRICE_BOOK } from "@dialbrio/types";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/states";
-import { useBilling } from "@/lib/queries";
+import { useBilling, usePriceBook } from "@/lib/queries";
 import { money, moneyWhole, periodInfo } from "@/features/billing/format";
 import { PlannedCard, SettingRow, SettingsCard } from "../kit";
 
 export function BillingSettings() {
   const { data: b, isLoading, isError, refetch } = useBilling();
+  const { data: pb = DEFAULT_PRICE_BOOK } = usePriceBook();
   if (isLoading) return <Skeleton className="h-56" />;
   if (isError || !b) return <ErrorState onRetry={() => refetch()} />;
-  const plan = PLANS.find((p) => p.id === b.planId)!;
+  const plan = pb.plans.find((p) => p.id === b.planId) ?? DEFAULT_PRICE_BOOK.plans.find((p) => p.id === b.planId)!;
   const period = periodInfo(b.periodStart, b.periodEnd);
   const capPct = b.spendCapCents ? (b.estimatedTotalCents / b.spendCapCents) * 100 : 0;
 

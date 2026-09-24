@@ -1,6 +1,7 @@
 "use client";
 
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { DEFAULT_PRICE_BOOK } from "@dialbrio/types";
 import type { ParallelLines, CampaignDraft, ContactQuery, ConversationFilter, DateRange, DialQueue, DispositionInput, ReportParams } from "@dialbrio/types";
 import { api } from "@/lib/api";
 import { useShellStore } from "@/lib/stores/shell";
@@ -184,6 +185,10 @@ export function useReport(p: ReportParams) {
 /** Organization-level (not sub-account) billing. */
 export function useBilling() {
   return useQuery({ queryKey: qk.billing("org"), queryFn: api.getBilling });
+}
+/** Price book from Sanity (via app/api/price-book). Starts from the code price book so screens never render blank prices. */
+export function usePriceBook() {
+  return useQuery({ queryKey: qk.priceBook, queryFn: api.getPriceBook, staleTime: 5 * 60_000, placeholderData: DEFAULT_PRICE_BOOK });
 }
 export function useSetSessionLines() {
   const qc = useQueryClient();

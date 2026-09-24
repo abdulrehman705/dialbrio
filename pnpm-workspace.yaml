@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+  - studio
 allowBuilds:
   '@prisma/engines': true
   prisma: true

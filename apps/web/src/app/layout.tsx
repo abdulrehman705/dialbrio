@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, JetBrains_Mono, Schibsted_Grotesk } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { isSanityConfigured } from "@/sanity/env";
+import { SanityLive } from "@/sanity/lib/live";
 import "./globals.css";
 
 const ui = Instrument_Sans({ subsets: ["latin"], variable: "--font-ui", display: "swap" });
@@ -25,6 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${ui.variable} ${display.variable} ${code.variable}`}>
       <body>
         <Providers>{children}</Providers>
+        {/* Live Content API: refreshes Sanity-backed pages when content is published. */}
+        {isSanityConfigured && <SanityLive />}
       </body>
     </html>
   );
