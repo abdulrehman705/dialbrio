@@ -153,8 +153,3 @@ export function CheckList({ items, className }: { items: React.ReactNode[]; clas
     </ul>
   );
 }
-
-/** Numbered divider between PDF-style chapters. */
-export function Rule({ className }: { className?: string }) {
-  return <hr className={cn("border-border", className)} />;
-}

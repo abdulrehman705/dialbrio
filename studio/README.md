@@ -1,9 +1,15 @@
-# Sanity Clean Content Studio
+# DialBrio Studio
 
-Congratulations, you have now installed the Sanity Content Studio, an open-source real-time content editing environment connected to the Sanity backend.
+Sanity Studio for the DialBrio website (project `u470ygx5`, dataset `production`): price book, blog,
+changelog, FAQs and waitlist signups. Standalone app; the website reads content through `next-sanity`.
 
-Now you can do the following things:
+```bash
+pnpm dev             # http://localhost:3333
+pnpm typegen         # extract schema and regenerate ../src/sanity/sanity.types.ts
+pnpm seed            # seed the launch price book (idempotent)
+pnpm schema:deploy   # publish the schema to Sanity
+pnpm deploy          # host the Studio on *.sanity.studio
+pnpm lint
+```
 
-- [Read “getting started” in the docs](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
-- [Join the Sanity community](https://www.sanity.io/community/join?utm_source=readme)
-- [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+Content model and price book flow: `../docs/architecture.md` §3.

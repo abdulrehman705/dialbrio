@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent } from "@/components/ui/dialog";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { APP_LOGIN_URL } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import { MARKETING_NAV } from "./nav";

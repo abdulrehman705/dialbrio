@@ -23,7 +23,3 @@ export function Input({ className, leadingIcon, trailing, ...props }: InputProps
     </div>
   );
 }
-
-export function Textarea({ className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea className={cn(inputBase, "min-h-20 resize-y py-2 leading-relaxed", className)} {...props} />;
-}

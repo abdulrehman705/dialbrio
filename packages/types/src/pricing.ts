@@ -117,8 +117,6 @@ export const USAGE_RATES: UsageRate[] = [
   { id: "ai_min", label: "AI voice-agent minutes", rate: "9¢ / min after included", unitMilliCents: 900, unit: "min" },
 ];
 
-export const SEAT_FIVE_PACK_CENTS = 22500;
-
 /** `first`/`second` are the two competitor columns; their labels live on the PriceBook. */
 /** A competitor column: only figures the vendor publishes on its own pricing page. */
 export interface Competitor { name: string; sourceUrl: string }

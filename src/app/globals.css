@@ -66,8 +66,6 @@
   --call-ringing: #2f63a3;
   --call-connected: #0b7a52;
   --call-wrap: #b37400;
-  --call-ended: #6b6b6b;
-  --call-failed: #c23b2a;
 
   --lead-fresh: #0a0a0a;
   --lead-fresh-soft: #f0f0f0;
@@ -82,12 +80,6 @@
   --lead-zombie-soft: #fafafa;
   --lead-zombie-text: #6b6b6b;
 
-  --chart-1: #0a0a0a;
-  --chart-2: #8a8a8a;
-  --chart-3: #4d4d4d;
-  --chart-4: #0b7a52;
-  --chart-5: #b37400;
-  --chart-6: #d4d4d4;
 
   --overlay: rgb(10 10 10 / 0.4);
 
@@ -154,8 +146,6 @@
   --call-ringing: #7fa9e0;
   --call-connected: #3fd196;
   --call-wrap: #e6a646;
-  --call-ended: #8a8a8a;
-  --call-failed: #f07a62;
 
   --lead-fresh: #ffffff;
   --lead-fresh-soft: #2a2a2a;
@@ -170,12 +160,6 @@
   --lead-zombie-soft: #141414;
   --lead-zombie-text: #8a8a8a;
 
-  --chart-1: #ffffff;
-  --chart-2: #8a8a8a;
-  --chart-3: #b3b3b3;
-  --chart-4: #3fd196;
-  --chart-5: #e6a646;
-  --chart-6: #2a2a2a;
 
   --overlay: rgb(0 0 0 / 0.7);
 
@@ -243,8 +227,6 @@
   --color-call-ringing: var(--call-ringing);
   --color-call-connected: var(--call-connected);
   --color-call-wrap: var(--call-wrap);
-  --color-call-ended: var(--call-ended);
-  --color-call-failed: var(--call-failed);
 
   --color-lead-fresh: var(--lead-fresh);
   --color-lead-fresh-soft: var(--lead-fresh-soft);
@@ -261,12 +243,6 @@
 
   --color-overlay: var(--overlay);
   --color-sidebar: var(--sidebar);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-chart-6: var(--chart-6);
 
   --radius-xs: 4px;
   --radius-sm: 6px;
@@ -283,32 +259,17 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
   --animate-ring-pulse: ring-pulse 1.6s var(--ease-out) infinite;
-  --animate-live-pulse: live-pulse 2s ease-in-out infinite;
-  --animate-shimmer: shimmer 1.6s linear infinite;
-  --animate-spin-slow: spin 1.2s linear infinite;
 }
 
 :root {
   --duration-fast: 120ms;
   --duration-base: 180ms;
   --duration-slow: 280ms;
-  --duration-slower: 400ms;
-  --topbar-h: 56px;
-  --sidebar-w: 248px;
-  --sidebar-w-collapsed: 64px;
 }
 
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-@keyframes menu-in {
-  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
-  to { opacity: 1; transform: none; }
-}
-@keyframes dialog-in {
-  from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 @keyframes sheet-in-right {
   from { transform: translateX(100%); }
@@ -325,14 +286,6 @@
 @keyframes ring-pulse {
   0% { transform: scale(1); opacity: 0.55; }
   100% { transform: scale(1.9); opacity: 0; }
-}
-@keyframes live-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
@@ -393,11 +346,6 @@
   }
   .text-balance {
     text-wrap: balance;
-  }
-  .skeleton-shimmer {
-    background: linear-gradient(90deg, var(--surface-sunken) 0%, var(--surface-active) 50%, var(--surface-sunken) 100%);
-    background-size: 200% 100%;
-    animation: var(--animate-shimmer);
   }
 }
 

@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${ui.variable} ${display.variable} ${code.variable}`}>
+    <html lang="en" className={`light ${ui.variable} ${display.variable} ${code.variable}`}>
       <body>
         <Providers>{children}</Providers>
         {/* Live Content API: refreshes Sanity-backed pages when content is published. */}
