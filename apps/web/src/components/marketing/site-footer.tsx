@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { APP_LOGIN_URL } from "@/lib/links";
 import { Container } from "./primitives";
 
 const columns = [
   { title: "Product", links: [["Overview", "/product"], ["Dialer", "/dialer"], ["AI", "/ai"], ["Conversations", "/conversations"], ["Integrations", "/integrations"]] },
-  { title: "Company", links: [["Pricing", "/pricing"], ["Blog", "/blog"], ["Changelog", "/changelog"], ["Security & compliance", "/security"], ["Join waitlist", "/waitlist"], ["Log in", "/login"]] },
-] as const;
+  { title: "Company", links: [["Pricing", "/pricing"], ["Blog", "/blog"], ["Changelog", "/changelog"], ["Security & compliance", "/security"], ["Join waitlist", "/waitlist"], ...(APP_LOGIN_URL ? [["Log in", APP_LOGIN_URL] as const] : [])] },
+];
 
 export function SiteFooter() {
   return (

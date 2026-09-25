@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { LEAD_STATE_META } from "@/components/domain";
-import { LeadStateBadge } from "@/components/domain";
+import { LEAD_STATE_META, LeadStateBadge } from "@/components/marketing/status";
 import { Compliance, CrmWorkflow, FinalCta } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";

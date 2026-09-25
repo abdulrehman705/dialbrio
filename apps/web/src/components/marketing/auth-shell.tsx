@@ -7,7 +7,6 @@ interface AuthShellProps {
   description: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  aside?: "login" | "waitlist";
 }
 
 const waitlistPoints = [
@@ -16,8 +15,8 @@ const waitlistPoints = [
   ["500 minutes", "free, on your own leads"],
 ];
 
-/** Split layout for sign-in / waitlist: inset ink panel beside a paper form. */
-export function AuthShell({ title, description, children, footer, aside = "login" }: AuthShellProps) {
+/** Split layout for the waitlist: inset ink panel beside a paper form. */
+export function AuthShell({ title, description, children, footer }: AuthShellProps) {
   return (
     <div className="light grid min-h-dvh bg-background text-fg lg:grid-cols-[1fr_minmax(480px,560px)]">
       <div className="hidden p-4 lg:block">
@@ -25,29 +24,18 @@ export function AuthShell({ title, description, children, footer, aside = "login
           <Link href="/" aria-label="DialBrio home" className="self-start rounded-md">
             <Logo markSize={28} />
           </Link>
-          {aside === "waitlist" ? (
-            <div className="max-w-md">
-              <p className="eyebrow">Waitlist</p>
-              <p className="mt-4 font-display text-[36px] leading-[1.08] font-bold tracking-[-0.035em]">See it dial your own list.</p>
-              <dl className="mt-10 divide-y divide-border border-y border-border">
-                {waitlistPoints.map(([k, v]) => (
-                  <div key={k} className="flex items-baseline justify-between gap-6 py-4">
-                    <dt className="font-display text-[22px] font-bold tracking-[-0.02em] text-brand-text">{k}</dt>
-                    <dd className="text-right text-[14px] text-fg-secondary">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ) : (
-            <figure className="max-w-md">
-              <blockquote className="font-display text-[30px] leading-[1.15] font-bold tracking-[-0.03em]">
-                “The first dial of the hour should be the one most likely to close.”
-              </blockquote>
-              <figcaption className="mt-5 text-[14px] leading-6 text-fg-secondary">
-                That&apos;s the whole idea behind the queue: fresh leads first, callbacks on time, and every lead showing the rep why it&apos;s next.
-              </figcaption>
-            </figure>
-          )}
+          <div className="max-w-md">
+            <p className="eyebrow">Waitlist</p>
+            <p className="mt-4 font-display text-[36px] leading-[1.08] font-bold tracking-[-0.035em]">See it dial your own list.</p>
+            <dl className="mt-10 divide-y divide-border border-y border-border">
+              {waitlistPoints.map(([k, v]) => (
+                <div key={k} className="flex items-baseline justify-between gap-6 py-4">
+                  <dt className="font-display text-[22px] font-bold tracking-[-0.02em] text-brand-text">{k}</dt>
+                  <dd className="text-right text-[14px] text-fg-secondary">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
           <p className="font-mono text-xs text-fg-muted">© 2026 DialBrio</p>
         </InkPanel>
       </div>

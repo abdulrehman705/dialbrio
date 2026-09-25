@@ -1,13 +1,7 @@
-import type { Metadata } from "next";
-import { AuthShell } from "@/components/marketing/auth-shell";
-import { LoginForm } from "@/components/marketing/login-form";
+import { redirect } from "next/navigation";
+import { APP_LOGIN_URL } from "@/lib/links";
 
-export const metadata: Metadata = { title: "Log in" };
-
+/** Sign-in lives in the product app; keep /login working for old links. */
 export default function LoginPage() {
-  return (
-    <AuthShell title="Welcome back" description="Sign in to your DialBrio workspace.">
-      <LoginForm />
-    </AuthShell>
-  );
+  redirect(APP_LOGIN_URL ?? "/waitlist");
 }

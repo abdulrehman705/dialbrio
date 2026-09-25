@@ -6,7 +6,7 @@ import { Grid3x3, Mic, PhoneOff } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
 import { StatusDot } from "@/components/ui/status-dot";
-import { DISPOSITION_META, LeadStateBadge } from "@/components/domain";
+import { DISPOSITION_META, LeadStateBadge } from "./status";
 import type { DispositionCode } from "@dialbrio/types";
 import { cn, formatClock } from "@/lib/utils";
 import { TypedLine } from "./motion";

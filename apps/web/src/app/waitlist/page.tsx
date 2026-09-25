@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Join the waitlist", description: "Ge
 
 export default function WaitlistPage() {
   return (
-    <AuthShell aside="waitlist" title="Join the waitlist" description="We're opening DialBrio to teams in batches. Leave your details and we'll email you when your workspace is ready.">
+    <AuthShell title="Join the waitlist" description="We're opening DialBrio to teams in batches. Leave your details and we'll email you when your workspace is ready.">
       <Suspense>
         <WaitlistForm />
       </Suspense>

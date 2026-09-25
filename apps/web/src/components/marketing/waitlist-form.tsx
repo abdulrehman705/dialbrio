@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { APP_LOGIN_URL } from "@/lib/links";
 import { waitlistSchema, type WaitlistInput } from "@/lib/validation/waitlist";
 
 const PLANS = ["solo", "team", "agency", "enterprise"] as const;
@@ -133,12 +134,14 @@ export function WaitlistForm() {
           Join the waitlist {!isSubmitting && <ArrowRight />}
         </Button>
       </form>
-      <p className="text-center text-[13px] text-fg-muted">
-        Already have access?{" "}
-        <Link href="/login" className="font-medium text-brand-text hover:underline">
-          Log in
-        </Link>
-      </p>
+      {APP_LOGIN_URL && (
+        <p className="text-center text-[13px] text-fg-muted">
+          Already have access?{" "}
+          <a href={APP_LOGIN_URL} className="font-medium text-brand-text hover:underline">
+            Log in
+          </a>
+        </p>
+      )}
     </div>
   );
 }

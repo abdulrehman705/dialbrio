@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/dialog";
+import { APP_LOGIN_URL } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import { MARKETING_NAV } from "./nav";
 
@@ -40,9 +41,11 @@ export function SiteHeader() {
           })}
         </nav>
         <div className="ml-auto flex items-center gap-1.5">
-          <Button asChild variant="ghost" size="sm" className="max-sm:hidden">
-            <Link href="/login">Log in</Link>
-          </Button>
+          {APP_LOGIN_URL && (
+            <Button asChild variant="ghost" size="sm" className="max-sm:hidden">
+              <a href={APP_LOGIN_URL}>Log in</a>
+            </Button>
+          )}
           <Button asChild variant="primary" size="sm" className="max-sm:hidden">
             <Link href="/waitlist">Join waitlist</Link>
           </Button>
@@ -70,9 +73,11 @@ export function SiteHeader() {
             <Button asChild variant="primary" size="lg">
               <Link href="/waitlist">Join waitlist</Link>
             </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/login">Log in</Link>
-            </Button>
+            {APP_LOGIN_URL && (
+              <Button asChild variant="secondary" size="lg">
+                <a href={APP_LOGIN_URL}>Log in</a>
+              </Button>
+            )}
             <p className="pt-1 text-center font-mono text-xs text-fg-muted">14 days · 500 free minutes · no card</p>
           </div>
         </SheetContent>

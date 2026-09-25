@@ -7,7 +7,7 @@ import { formatPlanPrice, type Plan, type PriceBook } from "@dialbrio/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Container, Eyebrow, InkPanel } from "./primitives";
-import { PlannedMarker } from "@/components/app/planned-marker";
+import { PlannedMarker } from "./planned-marker";
 
 type Interval = "monthly" | "annual";
 
