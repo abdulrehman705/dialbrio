@@ -14,10 +14,10 @@ export default defineCliConfig({
   },
   typegen: {
     enabled: true,
-    // The Next.js app lives in the monorepo at apps/web.
-    path: '../apps/web/src/**/*.{ts,tsx}',
+    // The Next.js website lives at the repo root.
+    path: '../src/**/*.{ts,tsx}',
     schema: 'schema.json',
-    generates: '../apps/web/src/sanity/sanity.types.ts',
+    generates: '../src/sanity/sanity.types.ts',
     overloadClientMethods: true,
   },
 })

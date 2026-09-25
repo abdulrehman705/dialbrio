@@ -6,13 +6,11 @@ settings:
 
 importers:
 
-  .: {}
-
-  apps/web:
+  .:
     dependencies:
       '@dialbrio/types':
         specifier: workspace:*
-        version: link:../../packages/types
+        version: link:packages/types
       '@gsap/react':
         specifier: ^2.1.2
         version: 2.1.2(gsap@3.15.0)(react@19.3.0)
@@ -76,7 +74,7 @@ importers:
     devDependencies:
       '@dialbrio/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/tsconfig
+        version: link:packages/tsconfig
       '@tailwindcss/postcss':
         specifier: ^4.3.3
         version: 4.3.3
@@ -9743,7 +9741,7 @@ snapshots:
       '@alloc/quick-lru': 5.3.0
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
-      postcss: 8.5.23
+      postcss: 8.5.28
       tailwindcss: 4.3.3
 
   '@tanstack/react-virtual@3.14.13(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':

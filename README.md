@@ -15,7 +15,7 @@ separate repos.
 ## Repository
 
 ```
-apps/web            Next.js 16 (App Router): the website
+src/                Next.js 16 (App Router) website, at the repo root
 studio              Sanity Studio (standalone): content, price book, waitlist signups
 packages/types      Price book types/defaults + product vocabulary shown on the site
 packages/tsconfig   Base TypeScript config
@@ -34,7 +34,7 @@ pnpm typecheck
 pnpm build
 ```
 
-Copy `apps/web/.env.example` to `apps/web/.env.local` (the Sanity project id and dataset are prefilled).
+Copy `.env.example` to `.env.local` (the Sanity project id and dataset are prefilled).
 Set `NEXT_PUBLIC_APP_LOGIN_URL` to the product app's sign-in page to show "Log in" in the header.
 
 ### Content (Sanity)

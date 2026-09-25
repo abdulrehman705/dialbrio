@@ -15,11 +15,10 @@ Implementation lives in:
 
 | Concern | Location |
 | --- | --- |
-| Tokens (CSS variables, light + dark) | `apps/web/src/app/globals.css` |
-| Logo system | `apps/web/src/components/brand/logo.tsx`, `apps/web/public/brand/*` |
-| Primitives | `apps/web/src/components/ui/*` |
-| Domain components | `apps/web/src/components/domain/*` |
-| Application shell | `apps/web/src/components/shell/*` |
+| Tokens (CSS variables, light + dark) | `src/app/globals.css` |
+| Logo system | `src/components/brand/logo.tsx`, `public/brand/*` |
+| Primitives | `src/components/ui/*` |
+| Status badges (lead states, dispositions) | `src/components/marketing/status.tsx` |
 
 ---
 
@@ -242,7 +241,7 @@ Forbidden: animated gradient backgrounds, floating objects, parallax, 3D rotatio
 ### React Bits
 
 Selected components from [React Bits](https://reactbits.dev) are vendored in
-`apps/web/src/components/reactbits/` (MIT + Commons Clause; notice in that folder), adapted to theme tokens.
+`src/components/reactbits/` (MIT + Commons Clause; notice in that folder), adapted to theme tokens.
 Motion libraries: `motion` for app state, `gsap` + `@gsap/react` for the React Bits text/scroll effects.
 
 | Component | Sanctioned use | Surface |

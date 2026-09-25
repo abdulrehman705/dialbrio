@@ -7,16 +7,17 @@ repos. The website links to the product only through `NEXT_PUBLIC_APP_LOGIN_URL`
 ## 1. Repository layout
 
 ```
-apps/web            Next.js 16 (App Router): the website
+src/, public/       Next.js 16 (App Router) website, at the repo root
 studio              Sanity Studio (standalone): marketing content, price book, waitlist signups
 packages/types      Price book types + defaults, and the product vocabulary the site illustrates
 packages/tsconfig   Base TypeScript config
 docs/               Design system (design.md), Mono handoff kit, colour studies, this file
 ```
 
-pnpm workspace (`pnpm-workspace.yaml`) lists exactly those four packages.
+The website is the workspace root package; `pnpm-workspace.yaml` adds `studio`, `packages/types` and
+`packages/tsconfig`.
 
-## 2. Website (`apps/web`)
+## 2. Website (repo root)
 
 ```
 src/
@@ -66,7 +67,7 @@ created from the global menu, duplicated or deleted.
 Studio (plan / usageRate / comparisonRow / pricingPage / faq)
    │  published
    ▼
-apps/web/src/sanity/price-book.ts  getPriceBook()   ← server-only, React cache, Live Content API
+src/sanity/price-book.ts  getPriceBook()   ← server-only, React cache, Live Content API
    │  maps GROQ result → PriceBook (packages/types/src/pricing.ts)
    │  per-section fallback to DEFAULT_PRICE_BOOK (code) if empty; whole-book fallback if Sanity fails
    └─► /pricing, PricingBand, Hero/FinalCta/PageHero trial lines
@@ -82,8 +83,8 @@ published; the browser holds one `text/event-stream` connection to the Live Cont
 `https://www.dialbrio.com`. Add every new domain
 (`pnpm --filter @dialbrio/studio exec sanity cors add https://… --credentials`).
 
-**Types.** TypeGen is configured in `studio/sanity.cli.ts` to scan `apps/web/src` and write
-`apps/web/src/sanity/sanity.types.ts`; run `pnpm typegen` after schema or query changes.
+**Types.** TypeGen is configured in `studio/sanity.cli.ts` to scan `src` and write
+`src/sanity/sanity.types.ts`; run `pnpm typegen` after schema or query changes.
 
 ## 4. Environment
 

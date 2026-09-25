@@ -491,7 +491,7 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: ../apps/web/src/sanity/queries.ts
+// Source: ../src/sanity/queries.ts
 // Variable: PRICE_BOOK_QUERY
 // Query: {  "page": *[_id == "pricingPage"][0]{    annualDiscountPercent,    trial{ days, freeMinutes, cardRequired },    competitors[]{ name, sourceUrl },    comparisonCheckedOn,    comparisonFootnote,    "faq": faqs[]->{ question, answer }  },  "plans": *[_type == "plan" && defined(planKey)] | order(sortOrder asc){    planKey, name, audience, monthlyPrice, includedSeats, seatsNote, includedAiMinutes,    "inheritsFrom": inheritsFrom->planKey,    highlights[]{ _key, text, availability, plannedNote },    cta, badge  },  "usageRates": *[_type == "usageRate" && defined(itemKey)] | order(sortOrder asc){    itemKey, label, unitPriceCents, unit, displayRate  },  "comparison": *[_type == "comparisonRow"] | order(sortOrder asc){    scenario, ours, competitorValues[]{ competitor, value }  }}
 export type PRICE_BOOK_QUERY_RESULT = {
@@ -564,7 +564,7 @@ export type PRICE_BOOK_QUERY_RESULT = {
   }>;
 };
 
-// Source: ../apps/web/src/sanity/queries.ts
+// Source: ../src/sanity/queries.ts
 // Variable: POSTS_INDEX_QUERY
 // Query: *[_type == "post" && defined(slug.current) && publishedAt <= now()] | order(publishedAt desc)[0...24]{  _id, title, "slug": slug.current, excerpt, publishedAt,  coverImage{ asset, alt, hotspot, crop },  "author": author->{ name, role },  "categories": categories[]->title}
 export type POSTS_INDEX_QUERY_RESULT = Array<{
@@ -586,7 +586,7 @@ export type POSTS_INDEX_QUERY_RESULT = Array<{
   categories: Array<string> | null;
 }>;
 
-// Source: ../apps/web/src/sanity/queries.ts
+// Source: ../src/sanity/queries.ts
 // Variable: POST_DETAIL_QUERY
 // Query: *[_type == "post" && slug.current == $slug][0]{  _id, title, "slug": slug.current, excerpt, publishedAt, body,  coverImage{ asset, alt, hotspot, crop },  "author": author->{ name, role, bio },  "categories": categories[]->title,  seo{ title, description }}
 export type POST_DETAIL_QUERY_RESULT = {
@@ -614,14 +614,14 @@ export type POST_DETAIL_QUERY_RESULT = {
   } | null;
 } | null;
 
-// Source: ../apps/web/src/sanity/queries.ts
+// Source: ../src/sanity/queries.ts
 // Variable: POST_SLUGS_QUERY
 // Query: *[_type == "post" && defined(slug.current)]{ "slug": slug.current }
 export type POST_SLUGS_QUERY_RESULT = Array<{
   slug: string;
 }>;
 
-// Source: ../apps/web/src/sanity/queries.ts
+// Source: ../src/sanity/queries.ts
 // Variable: CHANGELOG_QUERY
 // Query: *[_type == "changelogEntry"] | order(releasedAt desc)[0...50]{  _id, title, kind, releasedAt, summary}
 export type CHANGELOG_QUERY_RESULT = Array<{
