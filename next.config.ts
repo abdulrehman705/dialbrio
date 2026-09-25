@@ -8,7 +8,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@dialbrio/types"],
   poweredByHeader: false,
   images: {
     // Sanity image CDN (blog covers, customer logos, author photos).

@@ -7,14 +7,13 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit && pnpm -r typecheck",
+    "typecheck": "tsc --noEmit && pnpm --filter @dialbrio/studio typecheck",
     "dev:studio": "pnpm --filter @dialbrio/studio dev",
     "dev:all": "pnpm run --parallel \"/^dev(:studio)?$/\"",
     "typegen": "pnpm --filter @dialbrio/studio typegen",
     "sanity:seed": "pnpm --filter @dialbrio/studio seed"
   },
   "dependencies": {
-    "@dialbrio/types": "workspace:*",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.9.1",
     "@sanity/client": "^8.6.2",
@@ -36,7 +35,6 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@dialbrio/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",

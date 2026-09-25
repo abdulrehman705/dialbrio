@@ -1,6 +1,6 @@
 /**
  * Seeds Sanity with DialBrio's launch price book and site settings from the code constants in
- * @dialbrio/types, so the site shows the same prices on day one.
+ * src/lib/pricing.ts, so the site shows the same prices on day one.
  *
  * Idempotent: documents that already exist (matched by planKey / itemKey / scenario / question)
  * are left untouched, so editors' changes in the Studio are never overwritten.
@@ -19,7 +19,7 @@ import {
   TRIAL,
   USAGE_RATES,
   plannedStatus,
-} from '@dialbrio/types'
+} from '../../src/lib/pricing'
 
 const client = getCliClient({apiVersion: '2026-09-24'})
 

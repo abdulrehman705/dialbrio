@@ -8,7 +8,7 @@ import {
   type PriceBook,
   type UsageItemId,
   type UsageRate,
-} from "@dialbrio/types";
+} from "@/lib/pricing";
 import { isSanityConfigured } from "./env";
 import { sanityFetch } from "./lib/live";
 import { PRICE_BOOK_QUERY } from "./queries";

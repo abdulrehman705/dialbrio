@@ -8,14 +8,12 @@ repos. The website links to the product only through `NEXT_PUBLIC_APP_LOGIN_URL`
 
 ```
 src/, public/       Next.js 16 (App Router) website, at the repo root
-studio              Sanity Studio (standalone): marketing content, price book, waitlist signups
-packages/types      Price book types + defaults, and the product vocabulary the site illustrates
-packages/tsconfig   Base TypeScript config
+studio/             Sanity Studio (standalone): marketing content, price book, waitlist signups
 docs/               Design system (design.md), Mono handoff kit, colour studies, this file
 ```
 
-The website is the workspace root package; `pnpm-workspace.yaml` adds `studio`, `packages/types` and
-`packages/tsconfig`.
+The website is the workspace root package; `pnpm-workspace.yaml` adds `studio`. The Studio's seed script
+imports the code price book straight from `src/lib/pricing.ts`.
 
 ## 2. Website (repo root)
 
@@ -35,7 +33,8 @@ src/
 │  ├─ reactbits/            vendored React Bits animations (gsap / motion)
 │  ├─ ui/                   primitives used by the site (Button, Badge, Input, Select, Dialog/Sheet, Tooltip …)
 │  └─ brand/                logo
-├─ lib/                     utils, links (product login URL), waitlist validation
+├─ lib/                     pricing (price book types + defaults), vocabulary (lead states, dispositions),
+│                           utils, links (product login URL), waitlist validation
 └─ sanity/                  env, client, defineLive, queries, price book, generated types
 ```
 
@@ -68,7 +67,7 @@ Studio (plan / usageRate / comparisonRow / pricingPage / faq)
    │  published
    ▼
 src/sanity/price-book.ts  getPriceBook()   ← server-only, React cache, Live Content API
-   │  maps GROQ result → PriceBook (packages/types/src/pricing.ts)
+   │  maps GROQ result → PriceBook (src/lib/pricing.ts)
    │  per-section fallback to DEFAULT_PRICE_BOOK (code) if empty; whole-book fallback if Sanity fails
    └─► /pricing, PricingBand, Hero/FinalCta/PageHero trial lines
 ```

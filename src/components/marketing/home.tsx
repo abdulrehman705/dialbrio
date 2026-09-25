@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { formatPlanPrice, trialLine } from "@dialbrio/types";
+import { formatPlanPrice, trialLine } from "@/lib/pricing";
 import { getPriceBook } from "@/sanity/price-book";
 import { Button } from "@/components/ui/button";
 import { HeroProduct } from "./hero-product";

@@ -3,7 +3,7 @@ import { LEAD_STATE_META, LeadStateBadge } from "@/components/marketing/status";
 import { Compliance, CrmWorkflow, FinalCta } from "@/components/marketing/home";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Container, Section, SectionHeading } from "@/components/marketing/primitives";
-import { LEAD_STATES } from "@dialbrio/types";
+import { LEAD_STATES } from "@/lib/vocabulary";
 import { Reveal } from "@/components/marketing/motion";
 
 export const metadata: Metadata = { title: "Product", description: "How DialBrio moves a lead from form fill to booked appointment, and syncs every step back to your CRM." };

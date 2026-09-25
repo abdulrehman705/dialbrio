@@ -19,7 +19,6 @@
     "sanity"
   ],
   "dependencies": {
-    "@dialbrio/types": "workspace:*",
     "@sanity/client": "^8.6.2",
     "@sanity/icons": "^5.2.2",
     "@sanity/vision": "^6.16.0",

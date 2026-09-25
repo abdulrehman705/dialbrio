@@ -1,6 +1,4 @@
 packages:
-  - packages/types
-  - packages/tsconfig
   - studio
 minimumReleaseAgeExclude:
   - '@next/env@16.3.6'

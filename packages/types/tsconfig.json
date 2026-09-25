@@ -1,1 +1,0 @@
-{ "extends": "@dialbrio/tsconfig/base.json", "include": ["src"] }

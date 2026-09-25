@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { trialLine } from "@dialbrio/types";
+import { trialLine } from "@/lib/pricing";
 import { getPriceBook } from "@/sanity/price-book";
 import { Container, Eyebrow, InkPanel } from "./primitives";
 

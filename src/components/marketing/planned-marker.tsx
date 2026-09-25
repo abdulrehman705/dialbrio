@@ -1,4 +1,4 @@
-import { plannedStatus } from "@dialbrio/types";
+import { plannedStatus } from "@/lib/pricing";
 import { Tooltip } from "@/components/ui/tooltip";
 
 /**

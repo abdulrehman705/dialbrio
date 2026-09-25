@@ -1,5 +1,5 @@
 import { Ban, CalendarCheck, CircleDashed, CircleDot, Clock, Flame, Hourglass, PhoneMissed, PhoneOff, ThumbsDown, ThumbsUp, UserX, Voicemail, type LucideIcon } from "lucide-react";
-import type { DispositionCode, LeadState } from "@dialbrio/types";
+import type { DispositionCode, LeadState } from "@/lib/vocabulary";
 import { Badge, type BadgeProps, type BadgeTone } from "@/components/ui/badge";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";

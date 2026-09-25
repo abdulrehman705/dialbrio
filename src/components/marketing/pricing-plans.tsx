@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
-import { formatPlanPrice, type Plan, type PriceBook } from "@dialbrio/types";
+import { formatPlanPrice, type Plan, type PriceBook } from "@/lib/pricing";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Container, Eyebrow, InkPanel } from "./primitives";

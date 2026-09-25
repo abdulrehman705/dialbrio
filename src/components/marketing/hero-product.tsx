@@ -7,7 +7,7 @@ import { LogoMark } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
 import { StatusDot } from "@/components/ui/status-dot";
 import { DISPOSITION_META, LeadStateBadge } from "./status";
-import type { DispositionCode } from "@dialbrio/types";
+import type { DispositionCode } from "@/lib/vocabulary";
 import { cn, formatClock } from "@/lib/utils";
 import { TypedLine } from "./motion";
 

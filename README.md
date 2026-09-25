@@ -16,9 +16,7 @@ separate repos.
 
 ```
 src/                Next.js 16 (App Router) website, at the repo root
-studio              Sanity Studio (standalone): content, price book, waitlist signups
-packages/types      Price book types/defaults + product vocabulary shown on the site
-packages/tsconfig   Base TypeScript config
+studio/             Sanity Studio (standalone): content, price book, waitlist signups
 ```
 
 ## Getting started
